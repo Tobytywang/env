@@ -137,7 +137,7 @@
     </div><!-- 表格内容 -->
     <div class="row">
       <div style="text-align:center;">
-        <ul class="pagination">
+        <!-- <ul class="pagination">
         	<li><a href="#">&laquo;</a></li>
         	<li><a href="#">1</a></li>
         	<li><a href="#">2</a></li>
@@ -145,7 +145,30 @@
         	<li><a href="#">4</a></li>
         	<li><a href="#">5</a></li>
         	<li><a href="#">&raquo;</a></li>
+        </ul> -->
+        {{if .paginator.HasPages}}
+        <ul class="pagination pagination">
+            {{if .paginator.HasPrev}}
+                <li><a href="{{.paginator.PageLinkFirst}}">{{ paginator.first_page}}</a></li>
+                <li><a href="{{.paginator.PageLinkPrev}}">&laquo;</a></li>
+            {{else}}
+                <li class="disabled"><a>{{ paginator.first_page}}</a></li>
+                <li class="disabled"><a>&laquo;</a></li>
+            {{end}}
+            {{range $index, $page := .paginator.Pages}}
+                <li{{if $.paginator.IsActive .}} class="active"{{end}}>
+                    <a href="{{$.paginator.PageLink $page}}">{{$page}}</a>
+                </li>
+            {{end}}
+            {{if .paginator.HasNext}}
+                <li><a href="{{.paginator.PageLinkNext}}">&raquo;</a></li>
+                <li><a href="{{.paginator.PageLinkLast}}">{{ paginator.last_page}}</a></li>
+            {{else}}
+                <li class="disabled"><a>&raquo;</a></li>
+                <li class="disabled"><a>{{ paginator.last_page}}</a></li>
+            {{end}}
         </ul>
+        {{end}}
       </div>
     </div><!-- 分页区域 -->
     <div class="row">

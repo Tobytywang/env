@@ -80,6 +80,23 @@ func QRReadAll(qrlist *[]*QRCode) {
 	o := orm.NewOrm()
 	o.QueryTable("qrcode").OrderBy("-id").All(qrlist)
 }
+
+func CountCodes() int64{
+	o := orm.NewOrm()
+	cnt, _ := o.QueryTable("qrcode").Count()
+  return cnt
+}
+
+// ListPostsByOffsetAndLimit
+func ListCodesByOffsetAndLimit(offset int, codeperpage int) (qrlist []QRCode){
+	o := orm.NewOrm()
+	// templist := make([]QRCode, 0)
+	var templist []QRCode
+	o.QueryTable("qrcode").OrderBy("-id").All(&templist)
+	qrlist = templist[offset:(offset+codeperpage)]
+	return qrlist
+}
+
 // 根据ID查找
 func QRReadById(id int) (*QRCode, error){
   o := orm.NewOrm()
