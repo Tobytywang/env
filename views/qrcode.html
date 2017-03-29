@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>二维码</title>
 
@@ -23,6 +23,7 @@
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
   <style>
+  .container-fluid{width:100% !important;}
   /*ul,ol{list-style-type:none;}*/
   /*.left_menu {margin:0px;padding:0px;border-bottom:1px solid #aaaaaa;verticla-align:center;height:40px;}
   .left_menu a{height:100%;width:100%;}
@@ -52,7 +53,7 @@
                     <li><a href="#">个人中心</a></li>
                     <li><a href="#">使用帮助</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">退出登录</a></li>
+                    <li><a href="/login?exit=true">退出登录</a></li>
                     <!-- <li class="divider"></li> -->
                 </ul>
             </li>

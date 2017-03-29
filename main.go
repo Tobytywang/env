@@ -18,7 +18,7 @@ func init() {
 	var register = DB_USER + ":" + DB_PASSWD + "@/" + DB_NAME + "?charset=utf8&loc=Local"
 	orm.RegisterDriver("mysql", orm.DRMySQL)
 	orm.RegisterDataBase("default", DB_TYPE, register, 30)
-	orm.RunSyncdb("default", true, false)
+	orm.RunSyncdb("default", false, false)
 }
 
 func main() {

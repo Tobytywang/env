@@ -3,10 +3,34 @@ package controllers
 import (
   "env/models"
 	"github.com/astaxie/beego"
+  //"github.com/astaxie/beego/"
 )
 
+type PageOptions struct {
+  TableName             string
+  Conditions            string
+  Currentpage           int
+  PageSize              int
+  LinkItemCount         int
+  Href                  string
+  ParamName             string
+  FirstPageText         string
+  LastPageText          string
+  PrePageText           string
+  NextPageText          string
+  EnableFirstLastLink   bool
+  EnablePreNextLink     bool
+
+}
 type QRCodeController struct {
 	beego.Controller
+}
+
+func (c *QRCodeController) Prepare() {
+  if c.GetSession("IsLogin") == "" || c.GetSession("IsLogin") == nil {
+    c.Redirect("/login", 302)
+  }
+  beego.Debug(c.GetSession("IsLogin"))
 }
 
 func (c *QRCodeController) Get() {

@@ -25,6 +25,16 @@
     width:320px;
     background:rgba(0, 0, 0, 0.02);
   }
+  .login p {
+    position: absolute;
+    top:0px;
+    left:24px;
+    right:20px;
+    background-color: #E0FFE1;
+    margin: 0px;
+    border-left: 8px solid #ACE655;
+    padding: 5px 20px;
+  }
   .login form{
     margin-top:150px;
     margin-left: 8px;
@@ -40,6 +50,7 @@
 </head>
 <body>
   <div class="login">
+    {{if .Error}}<p>{{.flash.error}}</p>{{end}}
     <form class="form-horizontal" action="/login" method="POST">
       <div class="form-group">
         <label for="user_name" class="col-sm-4 control-label">用户名</label>
