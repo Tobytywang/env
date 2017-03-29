@@ -49,7 +49,7 @@ func (c *QRCodeController) Get() {
   qrlist := make([]*models.QRCode, 0)
   models.QRReadAll(&qrlist)
 
-  codesPerPage := 10
+  codesPerPage := 1
   paginator := pagination.SetPaginator(c.Ctx, codesPerPage, models.CountCodes())
 
   c.Data["QRList"] = models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage)
