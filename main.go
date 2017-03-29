@@ -4,7 +4,6 @@ import (
 	_ "env/models"
 	_ "env/routers"
 	"github.com/astaxie/beego"
-	"github.com/beego/i18n"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -23,6 +22,5 @@ func init() {
 }
 
 func main() {
-	beego.AddFuncMap("i18n", i18n.Tr)
 	beego.Run()
 }

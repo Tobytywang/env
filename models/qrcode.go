@@ -93,7 +93,13 @@ func ListCodesByOffsetAndLimit(offset int, codeperpage int) (qrlist []QRCode){
 	// templist := make([]QRCode, 0)
 	var templist []QRCode
 	o.QueryTable("qrcode").OrderBy("-id").All(&templist)
-	qrlist = templist[offset:(offset+codeperpage)]
+	var top int
+	if ((offset+codeperpage)>len(templist)){
+		top = len(templist)
+	} else {
+		top = (offset+codeperpage)
+	}
+	qrlist = templist[offset:top]
 	return qrlist
 }
 

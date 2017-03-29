@@ -4,17 +4,18 @@
   <meta charset="UTF-8">
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>二维码</title>
+  <title>标题</title>
 
   <!-- Fontawesome -->
   <link rel="stylesheet" href="/static/css/font-awesome.min.css">
   <!-- Bootstrap -->
-  <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- FileInput -->
   <link rel="stylesheet" type="text/css" href="/static/css/default.css">
   <link href="/static/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-
+  <!-- Editor.md -->
+  <link rel="stylesheet" href="/static/css/editormd.min.css"/>
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -23,7 +24,6 @@
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
   <style>
-  .container-fluid{width:100% !important;}
   /*ul,ol{list-style-type:none;}*/
   /*.left_menu {margin:0px;padding:0px;border-bottom:1px solid #aaaaaa;verticla-align:center;height:40px;}
   .left_menu a{height:100%;width:100%;}
@@ -36,7 +36,7 @@
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="background-color:#689F38;border:none;">
+  <nav class="navbar navbar-default" role="navigation" style="margin-bottom:0px;background-color:#689F38;border:none;">
     <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">LOGO</a>
@@ -53,7 +53,7 @@
                     <li><a href="#">个人中心</a></li>
                     <li><a href="#">使用帮助</a></li>
                     <li class="divider"></li>
-                    <li><a href="/login?exit=true">退出登录</a></li>
+                    <li><a href="#">退出登录</a></li>
                     <!-- <li class="divider"></li> -->
                 </ul>
             </li>
@@ -61,169 +61,106 @@
     </div>
     </div>
   </nav>
-  <div class="left" style="position:fixed;top:50px;height:100%;width:120px;background-color:#C8E6C9;color:#ffffff;">
-    <a href="#">
-      <div>
-        <img src="/static/img/二维码.png" />
-        <span>二维码</span>
-      </div>
-    </a>
-    <a href="#">
-      <img src="/static/img/文章.png" />
-      <span>文章</span>
-    </a>
-    <a href="#">
-      <img src="/static/img/设置.png" />
-      <span>个人中心</span>
-    </a>
-  </div>
-  <div class="container-fluid" style="margin-left:120px;margin-top:50px;background-color:#ECEFF1;">
-    <div class="row">
-      <div class="col-sm-2 col-md-2 col-lg-2" >
-        <button type="button" class="btn btn-default navbar-btn" data-toggle="modal" data-target="#myModal">新增</button>
-      </div>
-      <div class="col-sm-3 col-sm-offset-7 col-md-3 col-md-offset-7 col-lg-3 col-lg-offset-7" style="position:relative;padding:8px 15px 8px 8px;">
-        <span class="glyphicon glyphicon-search form-control-feedback" style="position:absolute;right:10px; top:8px;"></span>
-        <input type="text" class="form-control" id="username" name="username" placeholder="搜索">
-      </div>
-    </div><!-- 表格头部 -->
-    <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-12">
-        <table class="table table-striped">
-          <thead style="background-color:#33CCCC;">
-            <tr>
-              <th style="border:none;">ID</th>
-              <th style="border:none;">名称</th>
-              <th style="border:none;">链接</th>
-              <th style="border:none;">操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>玉兰</td>
-              <td><a href="http://xxx.org/plant?id=1">http://xxx.org/plant?id=1</a></td>
-              <td>
-                <button type="button" class="btn btn-sm btn-success ">下载</button>
-                <button type="button" class="btn btn-sm btn-primary ">修改</button>
-                <button type="button" class="btn btn-sm btn-danger ">删除</button>
-              </td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>梅花</td>
-              <td><a href="http://xxx.org/plant?id=1">http://xxx.org/plant?id=1</a></td>
-              <td>
-                <button type="button" class="btn btn-sm btn-success ">下载</button>
-                <button type="button" class="btn btn-sm btn-primary ">修改</button>
-                <button type="button" class="btn btn-sm btn-danger ">删除</button>
-              </td>
-            </tr>
-            {{range .QRList}}
-            <tr>
-              <td>{{.Id}}</td>
-              <td>{{.Name}}</td>
-              <td>{{.Link}}</td>
-              <td>
-                <button type="button" class="btn btn-sm btn-success ">下载</button>
-                <button type="button" class="btn btn-sm btn-primary ">修改</button>
-                <button type="button" class="btn btn-sm btn-danger ">删除</button>
-              </td>
-            </tr>
-            {{end}}
-          </tbody>
-        </table>
-      </div>
-    </div><!-- 表格内容 -->
-    <div class="row">
-      <div style="text-align:center;">
-        <!-- <ul class="pagination">
-        	<li><a href="#">&laquo;</a></li>
-        	<li><a href="#">1</a></li>
-        	<li><a href="#">2</a></li>
-        	<li><a href="#">3</a></li>
-        	<li><a href="#">4</a></li>
-        	<li><a href="#">5</a></li>
-        	<li><a href="#">&raquo;</a></li>
-        </ul> -->
-        {{if .paginator.HasPages}}
-        <ul class="pagination pagination">
-            {{if .paginator.HasPrev}}
-                <li><a href="{{.paginator.PageLinkFirst}}">首页</a></li>
-                <li><a href="{{.paginator.PageLinkPrev}}">&laquo;</a></li>
-            {{else}}
-                <li class="disabled"><a>首页</a></li>
-                <li class="disabled"><a>&laquo;</a></li>
-            {{end}}
-            {{range $index, $page := .paginator.Pages}}
-                <li{{if $.paginator.IsActive .}} class="active"{{end}}>
-                    <a href="{{$.paginator.PageLink $page}}">{{$page}}</a>
-                </li>
-            {{end}}
-            {{if .paginator.HasNext}}
-                <li><a href="{{.paginator.PageLinkNext}}">&raquo;</a></li>
-                <li><a href="{{.paginator.PageLinkLast}}">尾页</a></li>
-            {{else}}
-                <li class="disabled"><a>&raquo;</a></li>
-                <li class="disabled"><a>尾页</a></li>
-            {{end}}
-        </ul>
-        {{end}}
-      </div>
-    </div><!-- 分页区域 -->
-    <div class="row">
-    </div><!-- 网站标识 -->
-  </div>
+  <div class="row">
+    <div class="col-sm-2 col-md-2 col-lg-2 left" style="height:100%;background-color:#C8E6C9;color:#ffffff;">
+      <a href="/code">
+        <div>
+          <img src="/static/img/二维码.png" />
+          <span>二维码</span>
+        </div>
+      </a>
+      <a href="#">
+        <img src="/static/img/文章.png" />
+        <span>文章</span>
+      </a>
+      <a href="#">
+        <img src="/static/img/设置.png" />
+        <span>个人中心</span>
+      </a>
+    </div>
+    <div class="col-sm-10 col-md-10 col-lg-10" style="background-color:#ECEFF1;">
+      <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="/code">首页</a></li>
+            <li><a href="/code">二维码</a></li>
+            <li class="active">查看二维码</li>
+        </ol>
+        <div class="col-sm-2 col-md-2 col-lg-2" >
+          <a href="/code/add" type="button" class="btn btn-default navbar-btn">新增</a>
+        </div>
+        <div class="col-sm-3 col-sm-offset-7 col-md-3 col-md-offset-7 col-lg-3 col-lg-offset-7" style="position:relative;padding:8px 15px 8px 8px;">
+          <span class="glyphicon glyphicon-search form-control-feedback" style="position:absolute;right:10px; top:8px;"></span>
+          <input type="text" class="form-control" id="username" name="username" placeholder="搜索">
+        </div>
+      </div><!-- 表格头部 -->
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <table class="table table-striped">
+            <thead style="background-color:#33CCCC;">
+              <tr>
+                <th style="border:none;">ID</th>
+                <th style="border:none;">名称</th>
+                <th style="border:none;">链接</th>
+                <th style="border:none;">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{range .QRList}}
+              <tr>
+                <td>{{.Id}}</td>
+                <td>{{.Name}}</td>
+                <td>{{.Link}}</td>
+                <td>
+                  <button type="button" class="btn btn-sm btn-success ">下载</button>
+                  <button type="button" class="btn btn-sm btn-primary ">修改</button>
+                  <button type="button" class="btn btn-sm btn-danger ">删除</button>
+                </td>
+              </tr>
+              {{end}}
+            </tbody>
+          </table>
+        </div>
+      </div><!-- 表格内容 -->
+      <div class="row">
+        <div style="text-align:center;">
+          <!-- <ul class="pagination">
+          	<li><a href="#">&laquo;</a></li>
+          	<li><a href="#">1</a></li>
+          	<li><a href="#">2</a></li>
+          	<li><a href="#">3</a></li>
+          	<li><a href="#">4</a></li>
+          	<li><a href="#">5</a></li>
+          	<li><a href="#">&raquo;</a></li>
+          </ul> -->
+          {{if .paginator.HasPages}}
+          <ul class="pagination pagination">
+              {{if .paginator.HasPrev}}
+                  <li><a href="{{.paginator.PageLinkFirst}}">首页</a></li>
+                  <li><a href="{{.paginator.PageLinkPrev}}">&laquo;</a></li>
+              {{else}}
+                  <li class="disabled"><a>首页</a></li>
+                  <li class="disabled"><a>&laquo;</a></li>
+              {{end}}
+              {{range $index, $page := .paginator.Pages}}
+                  <li{{if $.paginator.IsActive .}} class="active"{{end}}>
+                      <a href="{{$.paginator.PageLink $page}}">{{$page}}</a>
+                  </li>
+              {{end}}
+              {{if .paginator.HasNext}}
+                  <li><a href="{{.paginator.PageLinkNext}}">&raquo;</a></li>
+                  <li><a href="{{.paginator.PageLinkLast}}">尾页</a></li>
+              {{else}}
+                  <li class="disabled"><a>&raquo;</a></li>
+                  <li class="disabled"><a>尾页</a></li>
+              {{end}}
+          </ul>
+          {{end}}
+        </div>
+      </div><!-- 分页区域 -->
+      <div class="row">
+      </div><!-- 网站标识 -->
+    </div>
   <!-- 模态框 -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-            <form id="QRCode" class="form-horizontal" enctype="multipart/form-data" action="/code" method="POST" role="form">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title" id="myModalLabel">添加植物</h4>
-              </div>
-              <div class="modal-body">
-                  <div class="form-group">
-                    <label for="firstname" class="col-sm-2 control-label">ID</label>
-                    <div class="col-sm-10">
-                      <p class="form-control-static">1</p>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="lastname" class="col-sm-2 control-label">学名</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="name" name="name" placeholder="请输入植物学名">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="lastname" class="col-sm-2 control-label">图片</label>
-                    <div class="col-sm-10">
-                      <input id="file-2" type="file" class="file" name="pic" data-show-upload="false">
-                    </div>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                  <button type="submit" class="btn btn-primary" onClick="return CheckInputSearch();">确认</button>
-                  <script type="text/javascript">
-                    function CheckInputSearch() {
-                    //       var uname = document.getElementById("unameSearch");
-                    //       var ustudentid = document.getElementById("ustudentidSearch");
-                    //       var uclass = document.getElementById("uclassSearch");
-                    //       if ((ustudentid.value.length == 0) && (uname.value.length == 0) && (uclass.value.length == 0))
-                    //       {
-                    //         alert("请至少输入一项内容");
-                    //         return false;
-                    //       }
-                        }
-                  </script>
-              </div>
-            </form>
-          </div><!-- /.modal-content -->
-      </div><!-- /.modal -->
-  </div>
-
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
   <!-- Bootstrap-hover-dropdown -->
