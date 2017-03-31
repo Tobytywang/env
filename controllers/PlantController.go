@@ -1,7 +1,7 @@
 package controllers
 
 import (
-  //"env/models"
+  "env/models"
 	"github.com/astaxie/beego"
 )
 
@@ -9,12 +9,27 @@ type PlantController struct {
 	beego.Controller
 }
 
+func (c *PlantController) Prepare() {
+	if c.GetSession("IsLogin") == "" || c.GetSession("IsLogin") == nil {
+		c.Redirect("/login", 302)
+	}
+}
 func (c *PlantController) Get() {
   // 默认执行的Get方法将返回所有的二维码数据
   // qrlist := make([]*models.QRCode, 0)
   // models.QRReadAll(&qrlist)
 
   // c.Data["QRList"] = qrlist
+	id, err := c.GetInt("id");
+  if err != nil {
+    beego.Debug(err)
+  }
+	code, err := models.QRReadById(id);
+	beego.Debug(code)
+	if err != nil {
+		beego.Debug(err)
+	}
+	c.Data["Plant"] = code
 	c.TplName = "plant.html"
 }
 //
