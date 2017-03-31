@@ -25,7 +25,8 @@ type QRCode struct {
 	Link		string // 页面的路径
 	Pic     string // 图片存储的路径
 	Code		string // 二维码存储的路径
-	Desc    string `orm:"type(text)"form:"desc"`
+	Desc    string `orm:"type(text)"form:"desc-html"`
+	Markdown    string `orm:"type(text)"form:"desc-markdown"`
 	Read    uint
 }
 
@@ -81,8 +82,26 @@ func QRAddOne(code *QRCode) error{
 }
 
 // 修改一个二维码
-func QRModify() {
-
+func QRUpdate(code *QRCode) error{
+	// 将原先的id删掉
+	// 重新add并调用原先的id
+	o := orm.NewOrm()
+	beego.Debug(code)
+	temp := QRCode{Id: code.Id}
+	if o.Read(&temp) == nil {
+		temp = *code
+		//beego.Debug(ttemp)
+		// 将原先的删掉
+		QRDel(code.Id)
+		// 用原先的id新建一个
+		if err := QRAddOne(&temp); err != nil {
+			beego.Debug(err)
+		} else {
+			return nil
+		}
+		// beego.Debug(ttemp)
+	}
+	return errors.New("修改目录失败")
 }
 
 // 删除一个二维码

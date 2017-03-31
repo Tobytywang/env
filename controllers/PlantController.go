@@ -10,9 +10,9 @@ type PlantController struct {
 }
 
 func (c *PlantController) Prepare() {
-	if c.GetSession("IsLogin") == "" || c.GetSession("IsLogin") == nil {
-		c.Redirect("/login", 302)
-	}
+	// if c.GetSession("IsLogin") == "" || c.GetSession("IsLogin") == nil {
+	// 	c.Redirect("/login", 302)
+	// }
 }
 func (c *PlantController) Get() {
   // 默认执行的Get方法将返回所有的二维码数据

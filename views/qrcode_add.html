@@ -87,31 +87,46 @@
       	    <li><a href="/code">二维码</a></li>
       	    <li class="active">新增二维码</li>
       	</ol>
-        <form action="/code" method="POST" class="form-horizontal" enctype="multipart/form-data" role="form">
+        <form id="code" action="/code" method="POST" class="form-horizontal" enctype="multipart/form-data" role="form">
           <div class="form-group">
             <label for="" class="col-sm-1 control-label">ID</label>
             <div class="col-sm-9">
-              <p class="form-control-static">1</p>
+              {{if .Modify}}
+              <input type="text" class="form-control" id="id" name="id" value="{{.Code.Id}}" readonly>
+              {{else}}
+              {{end}}
             </div>
           </div>
           <div class="form-group">
             <label for="" class="col-sm-1 control-label">学名</label>
             <div class="col-sm-9">
+              {{if .Modify}}
+              <input type="text" class="form-control" id="name" name="name" value="{{.Code.Name}}">
+              {{else}}
               <input type="text" class="form-control" id="name" name="name" placeholder="请输入植物学名">
+              {{end}}
             </div>
           </div>
           <div class="form-group">
             <label for="" class="col-sm-1 control-label">图片</label>
             <div class="col-sm-9">
               <div class="form-group">
-                  <input id="file-2" type="file" class="file" name="pic" onchange="selectFile(this);" data-show-upload="false">
+                {{if .Modify}}
+                <input id="file-2" type="file" class="file" name="pic" onchange="selectFile(this);" data-show-upload="false">
+                {{else}}
+                <input id="file-2" type="file" class="file" name="pic" onchange="selectFile(this);" data-show-upload="false">
+                {{end}}
               </div>
             </div>
           </div>
           <div class="form-group" style="display:none;">
             <label for="" class="col-sm-1 control-label">文件类型</label>
             <div class="col-sm-9">
+              {{if .Modify}}
               <input type="text" id="FileType" name="filetype"/>
+              {{else}}
+              <input type="text" id="FileType" name="filetype"/>
+              {{end}}
             </div>
           </div>
           <script type="text/javascript">
@@ -126,8 +141,13 @@
       	    <label for="" class="col-sm-1 control-label">介绍</label>
       	    <div class="col-sm-9">
           		<div class="form-group" id="desc">
-          		    <textarea  class="form-control editormd-markdown-textarea" id="ts" name="desc-markdown"></textarea>
-                  <textarea  class="form-control editormd-html-textarea" id="ts" name="desc"></textarea>
+                <!-- {{if .MOdify}}
+        		    <textarea  class="form-control editormd-markdown-textarea" id="ts" name="desc-markdown"></textarea>
+                <textarea  class="form-control editormd-html-textarea" id="ts" name="desc"></textarea>
+                {{else}} -->
+                <textarea  class="form-control editormd-markdown-textarea" name="desc-markdown"></textarea>
+                <textarea  class="form-control editormd-html-textarea" name="desc-html"></textarea>
+                <!-- {{end}} -->
           		</div>
       	    </div>
       	  </div>
@@ -163,10 +183,14 @@
       syncScrolling : "single",
       path    : "/static/lib/",
       saveHTMLToTextarea : true,
+      {{if .Modify}}
+      markdown: "{{.Code.Markdown}}",
+      {{end}}
       toolbarIcons: function(){
       	return ["undo", "redo", "|", "h3", "hr","|", "preview", "watch"]
       }
     });
+    // testEditor.getMarkdown();
     testEditor.getHTML();
   });
   </script>

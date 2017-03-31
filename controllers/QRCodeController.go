@@ -33,11 +33,11 @@ func (c *QRCodeController) Get() {
   // beego.Debug(models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage))
   c.Data["QRList"] = models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage)
   //c.Data["QRList"] = qrlist
-	c.TplName = "qrcode.html"
+  c.TplName = "qrcode.html"
 }
 
 func (c *QRCodeController) Add() {
-	c.TplName = "qrcode_add.html"
+  c.TplName = "qrcode_add.html"
 }
 
 func (c *QRCodeController) Download() {
@@ -67,23 +67,37 @@ func (c *QRCodeController) Del() {
 func (c *QRCodeController) Post() {
   // 该post使用url:/plant
   // 使用flash将报错信息传到前台
-  beego.Debug("post1")
   // flash := beego.NewFlash()
   // 获得表单输入
-  code := models.QRCode{}
-  if err := c.ParseForm(&code); err != nil {
-    beego.Debug(err)
+  // if id, err := c.GetInt("id"); err == nil{
+  //   beego.Debug(id)
+  //   if code, err := models.QRReadById(id); err == nil{
+  //     c.Data["Modify"] = true
+  //     c.Data["Code"] = code
+  //     beego.Debug(code)
+  //   }
+  // }
+  var code models.QRCode
+  if id, err := c.GetInt("id"); err == nil{
+    beego.Debug(c.ParseForm(code))
+    if code, err := models.QRReadById(id); err == nil{
+      // 没有错说明读到了对应id的内容
+      if err := c.ParseForm(code); err != nil {
+        beego.Debug(err)
+      }
+      if err := models.QRUpdate(code); err != nil {
+        beego.Debug(err)
+      }
+    }
+  } else {
+    // 有错说明没有这个id
+    if err = c.ParseForm(&code); err != nil {
+      beego.Debug(err)
+    }
+    if err := models.QRAddOne(&code); err != nil {
+      beego.Debug(err)
+    }
   }
-  ttype := c.Input().Get("filetype")
-  beego.Debug(ttype)
-  if _, err := c.SaveFile(&code, ttype); err != nil {
-    beego.Debug(err)
-  }
-  if err := models.QRAddOne(&code); err != nil {
-    beego.Debug(err)
-  }
-
-  // beego.Debug("post2")
   c.Redirect("/code", 302)
 }
 
