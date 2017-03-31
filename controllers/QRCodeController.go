@@ -37,6 +37,14 @@ func (c *QRCodeController) Get() {
 }
 
 func (c *QRCodeController) Add() {
+  if id, err := c.GetInt("id"); err == nil{
+    if code, err := models.QRReadById(id); err == nil{
+      beego.Debug(code)
+      // 没有错说明读到了对应id的内容
+      c.Data["Modify"] = true
+      c.Data["Code"] = code
+    }
+  }
   c.TplName = "qrcode_add.html"
 }
 
@@ -65,35 +73,27 @@ func (c *QRCodeController) Del() {
 }
 
 func (c *QRCodeController) Post() {
-  // 该post使用url:/plant
-  // 使用flash将报错信息传到前台
-  // flash := beego.NewFlash()
-  // 获得表单输入
-  // if id, err := c.GetInt("id"); err == nil{
-  //   beego.Debug(id)
-  //   if code, err := models.QRReadById(id); err == nil{
-  //     c.Data["Modify"] = true
-  //     c.Data["Code"] = code
-  //     beego.Debug(code)
-  //   }
-  // }
   var code models.QRCode
-  if id, err := c.GetInt("id"); err == nil{
-    beego.Debug(c.ParseForm(code))
-    if code, err := models.QRReadById(id); err == nil{
-      // 没有错说明读到了对应id的内容
-      if err := c.ParseForm(code); err != nil {
-        beego.Debug(err)
-      }
-      if err := models.QRUpdate(code); err != nil {
+  if err := c.ParseForm(&code); err !=nil {
+    beego.Debug(err)
+    c.Redirect("/code", 302)
+  }
+  beego.Debug(code)
+  // 这里是导致html解析错误的原因
+  if code.Id != 0 {
+    beego.Debug("id不为空")
+    beego.Debug(code.Id)
+    if data, err := models.QRReadById(code.Id); err == nil{
+      beego.Debug(data)
+      beego.Debug(code)
+      if err := models.QRUpdate(&code); err != nil {
         beego.Debug(err)
       }
     }
   } else {
+    beego.Debug("id为空")
+    beego.Debug(code.Id)
     // 有错说明没有这个id
-    if err = c.ParseForm(&code); err != nil {
-      beego.Debug(err)
-    }
     if err := models.QRAddOne(&code); err != nil {
       beego.Debug(err)
     }

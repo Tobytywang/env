@@ -89,19 +89,21 @@ func QRUpdate(code *QRCode) error{
 	beego.Debug(code)
 	temp := QRCode{Id: code.Id}
 	if o.Read(&temp) == nil {
-		temp = *code
+		// 依次将需要更新的内容写在这里
 		//beego.Debug(ttemp)
 		// 将原先的删掉
-		QRDel(code.Id)
 		// 用原先的id新建一个
-		if err := QRAddOne(&temp); err != nil {
-			beego.Debug(err)
-		} else {
-			return nil
-		}
-		// beego.Debug(ttemp)
+		beego.Debug(temp)
+		temp.Desc = code.Desc
+		temp.Markdown = code.Markdown
+		// if err := QRAddOne(&temp); err != nil {
+		// 	beego.Debug(err)
+		// } else {
+		// 	return nil
+		// }
+		o.Update(&temp, "Desc", "Markdown");
 	}
-	return errors.New("修改目录失败")
+	return nil
 }
 
 // 删除一个二维码

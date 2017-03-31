@@ -145,7 +145,7 @@
         		    <textarea  class="form-control editormd-markdown-textarea" id="ts" name="desc-markdown"></textarea>
                 <textarea  class="form-control editormd-html-textarea" id="ts" name="desc"></textarea>
                 {{else}} -->
-                <textarea  class="form-control editormd-markdown-textarea" name="desc-markdown"></textarea>
+                <textarea  class="form-control editormd-markdown-textarea" name="desc-markdown">{{.Code.Markdown}}</textarea>
                 <textarea  class="form-control editormd-html-textarea" name="desc-html"></textarea>
                 <!-- {{end}} -->
           		</div>
@@ -183,9 +183,9 @@
       syncScrolling : "single",
       path    : "/static/lib/",
       saveHTMLToTextarea : true,
-      {{if .Modify}}
-      markdown: "{{.Code.Markdown}}",
-      {{end}}
+      // {{if .Modify}}
+      // markdown: "{{.Code.Markdown}}",
+      // {{end}}
       toolbarIcons: function(){
       	return ["undo", "redo", "|", "h3", "hr","|", "preview", "watch"]
       }
