@@ -17,6 +17,7 @@ func init() {
 		beego.Router("/code", &controllers.QRCodeController{})
 		beego.Router("/code/add", &controllers.QRCodeController{}, "get:Add")
 		beego.Router("/download", &controllers.QRCodeController{}, "get:Download")
+		beego.Router("/code/del", &controllers.QRCodeController{}, "get:Del")
 		// 植物链接
 		beego.Router("/plant", &controllers.PlantController{})
 		// 文章链接

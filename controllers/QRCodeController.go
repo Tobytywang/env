@@ -52,6 +52,17 @@ func (c *QRCodeController) Download() {
   }
   c.Ctx.Output.Download(code.Code);
 }
+func (c *QRCodeController) Del() {
+  id, err := c.GetInt("id");
+  if err != nil {
+    beego.Debug(err)
+  }
+  err = models.QRDel(id);
+  if err != nil {
+    beego.Debug(err)
+  }
+	c.Redirect("/code", 302)
+}
 
 func (c *QRCodeController) Post() {
   // 该post使用url:/plant
