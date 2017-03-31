@@ -21,8 +21,8 @@ import (
 type QRCode struct {
 	Id      int   `orm:"pk;auto"form:"id"`
 	Name    string `orm:"size(100)"form:"name"`
-	Link    string
-	Pic     string `form:"pic"`
+	Link		string // 页面的路径
+	Pic     string // 图片存储的路径
 	Desc    string `orm:"type(text)"form:"desc"`
 	Read    uint
 }

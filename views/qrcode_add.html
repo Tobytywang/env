@@ -104,10 +104,24 @@
             <label for="" class="col-sm-1 control-label">图片</label>
             <div class="col-sm-9">
               <div class="form-group">
-                  <input id="file-2" type="file" class="file" name="pic" data-show-upload="false">
+                  <input id="file-2" type="file" class="file" name="pic" onchange="selectFile(this);" data-show-upload="false">
               </div>
             </div>
           </div>
+          <div class="form-group" style="display:none;">
+            <label for="" class="col-sm-1 control-label">文件类型</label>
+            <div class="col-sm-9">
+              <input type="text" id="FileType" name="filetype"/>
+            </div>
+          </div>
+          <script type="text/javascript">
+            function selectFile(upload){
+              var filename = upload.value;
+              var mime = filename.toLowerCase().substr(filename.lastIndexOf("."));
+              var filetype = document.getElementById("FileType");
+              filetype.value = mime;
+            }
+          </script>
       	  <div>
       	    <label for="" class="col-sm-1 control-label">介绍</label>
       	    <div class="col-sm-9">
