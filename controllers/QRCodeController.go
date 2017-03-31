@@ -40,6 +40,19 @@ func (c *QRCodeController) Add() {
 	c.TplName = "qrcode_add.html"
 }
 
+func (c *QRCodeController) Download() {
+  id, err := c.GetInt("id");
+  if err != nil {
+    beego.Debug(err)
+  }
+  code, err := models.QRReadById(id);
+  beego.Debug(code)
+  if err != nil {
+    beego.Debug(err)
+  }
+  c.Ctx.Output.Download(code.Code);
+}
+
 func (c *QRCodeController) Post() {
   // 该post使用url:/plant
   // 使用flash将报错信息传到前台
