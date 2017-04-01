@@ -4,10 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>植物百科</title>
+  <title>Document</title>
   <style>
     body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div{margin:0;padding:0;border:0;}
-    /*body{background:#fff;color:#333;font-size:12px; margin-top:5px;font-family:"SimSun","宋体","Arial Narrow";} */
     ul,ol{list-style-type:none;}
     select,input,img,select{vertical-align:middle;}
     a{text-decoration:none;}
@@ -15,55 +14,119 @@
     a:visited{color:#800080;}
     a:hover,a:active,a:focus{color:#c00;text-decoration:underline;}
 
-    .head{-moz-box-shadow:2px 2px 5px #666666; -webkit-box-shadow:2px 2px 5px #666666; box-shadow:2px 2px 5px #666666;}
-    .name h2 {text-shadow:1px 1px 5px #202020;}
+    .head{-moz-box-shadow:0px 2px 5px #666666; -webkit-box-shadow:0px 2px 5px #666666; box-shadow:0px 2px 5px #666666;}
+    .name h2 {text-shadow:1px 1px 5px #202020;color:#fff;}
 
-    .content h3 {margin:15px 0px 10px 0px;}
-    .content p {text-indent: 2em; margin:0px 14px 0px 14px;word-break:break-all;}
-    .content h3 {border-left:12px solid #4F9CEE;padding-left:10px;}
+    .body h3 {margin:15px 0px 10px 0px;}
+    .body p {text-indent: 2em; margin:0px 14px 0px 14px;word-break:break-all;}
+    .body h3 {border-left:12px solid #4F9CEE;padding-left:10px;}
   </style>
 </head>
 <body style="background-color:#fafafa;">
-  <div class="head" style="text-align:center;">
-    <!-- <img src="/static/img/001.jpg" alt="一串红" style="width:100%;margin:0px;"/> -->
-    <img src="/{{.Plant.Pic}}" alt="一串红" style="width:100%;margin:0px;"/>
-  </div><!-- head -->
-  <div class="name" style="position:fixed;color:#fff;">
-    <h2>{{.Plant.Name}}</h2>
-  </div>
-  <div class="content" style="overflow:auto;">
-    {{str2html .Plant.Desc}}
-   <!-- <h3>形态特征</h3>
-   <p>亚灌木状草本，高可达90厘米。茎钝四稜形，具浅槽，无毛。叶卵圆形或三角状卵圆形，长2.5-7厘米，宽2-4.5厘米，先端渐尖，基部截形或圆形，稀钝，边缘具锯齿，上面绿色，下面较淡，两面无毛，下面具腺点；茎生叶叶柄长3-4.5厘米，无毛。</p>
-    <h3>物种分布</h3>
-    <p>原产于巴西，我国各地广泛栽培。</p>
-    <h3>生活习性</h3>
-    <p>喜阳，也耐半阴，一串红要求疏松、肥沃和排水良好的砂质壤土。而对用甲基溴化物处理土壤和碱性土壤反应非常敏感，适宜于pH5.5—6.0的土壤中生长。耐寒性差，生长适温20－25摄氏度。15摄氏度以下停止生长，10摄氏度以下叶片枯黄脱落。</p>
-       <h3>形态特征</h3>
-   <p>亚灌木状草本，高可达90厘米。茎钝四稜形，具浅槽，无毛。叶卵圆形或三角状卵圆形，长2.5-7厘米，宽2-4.5厘米，先端渐尖，基部截形或圆形，稀钝，边缘具锯齿，上面绿色，下面较淡，两面无毛，下面具腺点；茎生叶叶柄长3-4.5厘米，无毛。</p>
-    <h3>物种分布</h3>
-    <p>原产于巴西，我国各地广泛栽培。</p>
-    <h3>生活习性</h3>
-    <p>喜阳，也耐半阴，一串红要求疏松、肥沃和排水良好的砂质壤土。而对用甲基溴化物处理土壤和碱性土壤反应非常敏感，适宜于pH5.5—6.0的土壤中生长。耐寒性差，生长适温20－25摄氏度。15摄氏度以下停止生长，10摄氏度以下叶片枯黄脱落。</p>
-       <h3>形态特征</h3>
-   <p>亚灌木状草本，高可达90厘米。茎钝四稜形，具浅槽，无毛。叶卵圆形或三角状卵圆形，长2.5-7厘米，宽2-4.5厘米，先端渐尖，基部截形或圆形，稀钝，边缘具锯齿，上面绿色，下面较淡，两面无毛，下面具腺点；茎生叶叶柄长3-4.5厘米，无毛。</p>
-    <h3>物种分布</h3>
-    <p>原产于巴西，我国各地广泛栽培。</p>
-    <h3>生活习性</h3>
-    <p>喜阳，也耐半阴，一串红要求疏松、肥沃和排水良好的砂质壤土。而对用甲基溴化物处理土壤和碱性土壤反应非常敏感，适宜于pH5.5—6.0的土壤中生长。耐寒性差，生长适温20－25摄氏度。15摄氏度以下停止生长，10摄氏度以下叶片枯黄脱落。</p> -->
-  </div><!-- body -->
+	  <div class="head" style="position:fixed;">
+	    <img src="/{{.Plant.Pic}}" alt="{{.Plant.Name}}" style="height:100%;width:100%;"/>
+	    <div class="name" style="position:absolute;">
+	      <h2>{{.Plant.Name}}</h2>
+	    </div>
+	  </div><!-- head -->
+
+	  <div class="body" style="position:fixed;overflow:auto;">
+	   <h3>形态特征</h3>
+	   <p>亚灌木状草本，高可达90厘米。茎钝四稜形，具浅槽，无毛。叶卵圆形或三角状卵圆形，长2.5-7厘米，宽2-4.5厘米，先端渐尖，基部截形或圆形，稀钝，边缘具锯齿，上面绿色，下面较淡，两面无毛，下面具腺点；茎生叶叶柄长3-4.5厘米，无毛。</p>
+	    <h3>物种分布</h3>
+	    <p>原产于巴西，我国各地广泛栽培。</p>
+	    <h3>生活习性</h3>
+	    <p>喜阳，也耐半阴，一串红要求疏松、肥沃和排水良好的砂质壤土。而对用甲基溴化物处理土壤和碱性土壤反应非常敏感，适宜于pH5.5—6.0的土壤中生长。耐寒性差，生长适温20－25摄氏度。15摄氏度以下停止生长，10摄氏度以下叶片枯黄脱落。</p>
+	       <h3>形态特征</h3>
+	   <p>亚灌木状草本，高可达90厘米。茎钝四稜形，具浅槽，无毛。叶卵圆形或三角状卵圆形，长2.5-7厘米，宽2-4.5厘米，先端渐尖，基部截形或圆形，稀钝，边缘具锯齿，上面绿色，下面较淡，两面无毛，下面具腺点；茎生叶叶柄长3-4.5厘米，无毛。</p>
+	    <h3>物种分布</h3>
+	    <p>原产于巴西，我国各地广泛栽培。</p>
+	    <h3>生活习性</h3>
+	    <p>喜阳，也耐半阴，一串红要求疏松、肥沃和排水良好的砂质壤土。而对用甲基溴化物处理土壤和碱性土壤反应非常敏感，适宜于pH5.5—6.0的土壤中生长。耐寒性差，生长适温20－25摄氏度。15摄氏度以下停止生长，10摄氏度以下叶片枯黄脱落。</p>
+	       <h3>形态特征</h3>
+	   <p>亚灌木状草本，高可达90厘米。茎钝四稜形，具浅槽，无毛。叶卵圆形或三角状卵圆形，长2.5-7厘米，宽2-4.5厘米，先端渐尖，基部截形或圆形，稀钝，边缘具锯齿，上面绿色，下面较淡，两面无毛，下面具腺点；茎生叶叶柄长3-4.5厘米，无毛。</p>
+	    <h3>物种分布</h3>
+	    <p>原产于巴西，我国各地广泛栽培。</p>
+	    <h3>生活习性</h3>
+	    <p>喜阳，也耐半阴，一串红要求疏松、肥沃和排水良好的砂质壤土。而对用甲基溴化物处理土壤和碱性土壤反应非常敏感，适宜于pH5.5—6.0的土壤中生长。耐寒性差，生长适温20－25摄氏度。15摄氏度以下停止生长，10摄氏度以下叶片枯黄脱落。</p>
+	  </div><!-- body -->
   <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
   <script type="text/javascript">
     $(document).ready(function(){
-      // 获得视口的总高度
-      // 减去图片的高度为文本的显示高度
-      // 设置文本的高度
-      $("img").height($(window).height() * 0.35);
-      $(".name").css("top", ($(window).height() * 0.35 - 40) + "px");
-      $(".name").css("right", "10px");
-      var max_height = $(window).height() - $(".head").height();
-      $(".content").css("max-height", max_height + "px");
+      if ($(window).height() > $(window).width()) {
+        console.log("长屏幕" + $(window).width() + " * " + $(window).height());
+        if ($(window).height()*0.4<200) {
+          h = 200;
+        } else {
+          h = $(window).height()*0.4;
+        }
+        $(".head").height(h);
+        $(".head").width($(window).width());
+      	$(".head").css("top", "0px");
+        $(".head").css("left", "0px");
+        $(".body").height($(window).height()*0.6);
+        $(".body").width($(window).width());
+      	$(".body").css("top", h);
+        $(".body").css("left", "0px");
+        $(".name").css("bottom", "10px");
+        $(".name").css("right", "15px");
+      } else {
+        console.log("宽屏幕" + $(window).width() + " * " + $(window).height());
+        if ($(window).width()*0.4<200) {
+          w = 200;
+        } else {
+          w = $(window).width()*0.4;
+        }
+        $(".head").width(w);
+        $(".head").height($(window).height());
+      	$(".head").css("top", "0px");
+        $(".head").css("left", "0px");
+        $(".body").width($(window).width()*0.6);
+        $(".body").height($(window).height());
+      	$(".body").css("top", "0px");
+        $(".body").css("left", w);
+        $(".name").css("bottom", "10px");
+        $(".name").css("right", "15px");
+      }
     });
+    $(window).bind("resize", resizeWindow);
+    function resizeWindow(e){
+      if ($(window).height() > $(window).width()) {
+        console.log("长屏幕" + $(window).width() + " * " + $(window).height());
+        if ($(window).height()*0.4<200) {
+          h = 200;
+        } else {
+          h = $(window).height()*0.4;
+        }
+        $(".head").height(h);
+        $(".head").width($(window).width());
+      	$(".head").css("top", "0px");
+        $(".head").css("left", "0px");
+        $(".body").height($(window).height()*0.6);
+        $(".body").width($(window).width());
+      	$(".body").css("top", h);
+        $(".body").css("left", "0px");
+        $(".name").css("bottom", "10px");
+        $(".name").css("right", "15px");
+      } else {
+        console.log("宽屏幕" + $(window).width() + " * " + $(window).height());
+        if ($(window).width()*0.4<200) {
+          w = 200;
+        } else {
+          w = $(window).width()*0.4;
+        }
+        $(".head").width(w);
+        $(".head").height($(window).height());
+      	$(".head").css("top", "0px");
+        $(".head").css("left", "0px");
+        $(".body").width($(window).width()*0.6);
+        $(".body").height($(window).height());
+      	$(".body").css("top", "0px");
+        $(".body").css("left", w);
+        $(".name").css("bottom", "10px");
+        $(".name").css("right", "15px");
+      }
+    }
   </script>
 
 </body>

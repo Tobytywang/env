@@ -78,6 +78,7 @@ func (c *QRCodeController) Post() {
     beego.Debug(err)
     c.Redirect("/code", 302)
   }
+  filetype := c.GetString("filetype")
   beego.Debug(code)
   // 这里是导致html解析错误的原因
   if code.Id != 0 {
@@ -94,20 +95,34 @@ func (c *QRCodeController) Post() {
     beego.Debug("id为空")
     beego.Debug(code.Id)
     // 有错说明没有这个id
+    // 存储文字信息
+    beego.Debug("存储图片<")
+    if _,err:=c.SaveFile(&code, filetype);err!=nil{
+      beego.Debug(err)
+    }
+    beego.Debug("存储图片>")
     if err := models.QRAddOne(&code); err != nil {
       beego.Debug(err)
     }
+    // 存储图片
+    // _, _, err := c.GetFile("pic")
+    // if err == nil {
+    //   os.MkdirAll("static/upload/", 0777)
+    //   c.SavaToFile("pic", "static/upload/" + c.GetString("name"))
+    // } else {
+    //   beego.Debug(err)
+    // }
   }
   c.Redirect("/code", 302)
 }
 
 // 处理上传文件
 // 返回文件的路径
-func (c *QRCodeController) SaveFile(p *models.QRCode, ttype string) (string, error) {
+func (c *QRCodeController) SaveFile(p *models.QRCode, filetype string) (string, error) {
 	// 重命名为随机数
-	p.Name = c.RandName() + ttype
+	beego.Debug(p)
 	filepath := "static/upload/" + time.Now().Format("2006-01-02")
-	p.Pic = filepath + "/" + p.Name
+	p.Pic = filepath + "/" + p.Name  + filetype
 	// 存入文件系统
 	beego.Debug(p)
 	_, _, err := c.GetFile("pic")
@@ -115,7 +130,7 @@ func (c *QRCodeController) SaveFile(p *models.QRCode, ttype string) (string, err
   beego.Debug("获取到了文件")
 	if err == nil {
 		os.MkdirAll(filepath, 0777)
-		if err:=c.SaveToFile("pic", filepath+"/"+p.Name); err!=nil{
+		if err:=c.SaveToFile("pic", filepath+"/"+p.Name + filetype); err!=nil{
       beego.Debug(err)
     }
 	} else {
@@ -123,7 +138,7 @@ func (c *QRCodeController) SaveFile(p *models.QRCode, ttype string) (string, err
 	}
 	// 存入数据库
 	// models.DAdd(p)
-	// beego.Debug(p)
+	beego.Debug(p)
 	return p.Pic, nil
 }
 
