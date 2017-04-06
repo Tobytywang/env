@@ -36,14 +36,12 @@
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-default" role="navigation" style="margin-bottom:0px;background-color:#689F38;border:none;">
-    <div class="container-fluid">
+  <nav class="navbar navbar-default" role="navigation" style="margin-bottom:0px;background-color:#00ca79;border:none;border-radius: 0px;">
+    <div class="container-fluid" style="padding-right: 0px;">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">LOGO</a>
+      <a class="navbar-brand" href="/admin">LOGO</a>
     </div>
     <div class="collapse navbar-collapse" id="example-navbar-collapse">
-        <!--向左对齐-->
-        <!--向右对齐-->
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle-toggle user" data-toggle="dropdown-dropdown" data-hover="dropdown">
@@ -53,7 +51,7 @@
                     <li><a href="#">个人中心</a></li>
                     <li><a href="#">使用帮助</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">退出登录</a></li>
+                    <li><a href="/login?exit=true">退出登录</a></li>
                     <!-- <li class="divider"></li> -->
                 </ul>
             </li>
@@ -62,7 +60,6 @@
     </div>
   </nav>
   <div class="row">
-    <!-- <div class="col-sm-3 col-md-3 col-lg-3 left" style="position:fixed;top:50px;height:100%;width:120px;background-color:#C8E6C9;color:#ffffff;">-->
     <div class="col-sm-2 col-md-2 col-lg-2 left" style="height:100%;background-color:#C8E6C9;color:#ffffff;">
       <a href="/code">
         <div>
@@ -83,10 +80,12 @@
     <div class="col-sm-10 col-md-10 col-lg-10" style="background-color:#ECEFF1;">
       <div class="row">
       	<ol class="breadcrumb" style="margin-bottom:0px;">
-      	    <li><a href="/code">首页</a></li>
+      	    <li><a href="/admin">首页</a></li>
       	    <li><a href="/code">二维码</a></li>
       	    <li class="active">新增二维码</li>
       	</ol>
+      </div>
+      <div class="row" style="padding-top:15px;">
         <form id="code" action="/code" method="POST" class="form-horizontal" enctype="multipart/form-data" role="form">
           <div class="form-group">
             <label for="" class="col-sm-1 control-label">ID</label>
@@ -110,13 +109,11 @@
           <div class="form-group">
             <label for="" class="col-sm-1 control-label">图片</label>
             <div class="col-sm-9">
-              <div class="form-group">
                 {{if .Modify}}
                 <input id="file-2" type="file" class="file" name="pic" onchange="selectFile(this);" data-show-upload="false">
                 {{else}}
                 <input id="file-2" type="file" class="file" name="pic" onchange="selectFile(this);" data-show-upload="false">
                 {{end}}
-              </div>
             </div>
           </div>
           <div class="form-group" style="display:none;">
@@ -137,23 +134,16 @@
               filetype.value = mime;
             }
           </script>
-      	  <div>
+      	  <div class="form-group">
       	    <label for="" class="col-sm-1 control-label">介绍</label>
-      	    <div class="col-sm-9">
-          		<div class="form-group" id="desc">
-                <!-- {{if .MOdify}}
-        		    <textarea  class="form-control editormd-markdown-textarea" id="ts" name="desc-markdown"></textarea>
-                <textarea  class="form-control editormd-html-textarea" id="ts" name="desc"></textarea>
-                {{else}} -->
-                <textarea  class="form-control editormd-markdown-textarea" name="desc-markdown">{{.Code.Markdown}}</textarea>
-                <textarea  class="form-control editormd-html-textarea" name="desc-html"></textarea>
-                <!-- {{end}} -->
-          		</div>
+      	    <div id="desc" class="col-sm-9" style="padding-left:15px; padding-right:15px;">
+                <textarea class="form-control editormd-markdown-textarea" name="desc-markdown">{{.Code.Markdown}}</textarea>
+                <textarea class="form-control editormd-html-textarea" name="desc-html"></textarea>
       	    </div>
       	  </div>
           <div class="form-group">
             <div class="col-sm-offset-9 col-sm-1">
-              <button type="submit" class="btn btn-primary">登录</button>
+              <button type="submit" class="btn btn-primary">提交</button>
             </div>
           </div>
         </form>
@@ -178,8 +168,8 @@
   var testEditor;
   $(function() {
     testEditor = editormd("desc", {
-      width   : "800px",
-      height  : 320,
+      width   : 768,
+      height  : 400,
       syncScrolling : "single",
       path    : "/static/lib/",
       saveHTMLToTextarea : true,

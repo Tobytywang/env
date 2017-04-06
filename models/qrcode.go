@@ -1,3 +1,4 @@
+// qrcode提供二维码的增删改查功能
 package models
 
 import (
@@ -8,48 +9,40 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
-	// qrcode
 	qrcode "github.com/skip2/go-qrcode"
 )
 
-// 单页面（富文本处理）
-// ID
-// 学名
-// 链接网站链接
-// 图片链接
-// 植物描述
-// 阅读热度
+// 定义二维码结构体（数据库表）
 type QRCode struct {
-	Id      int   `orm:"pk;auto"form:"id"`
-	Name    string `orm:"size(100)"form:"name"`
-	Link		string // 页面的路径
-	Pic     string // 图片存储的路径
-	Code		string // 二维码存储的路径
-	Desc    string `orm:"type(text)"form:"desc-html"`
-	Markdown    string `orm:"type(text)"form:"desc-markdown"`
-	Read    uint
+	Id        int    `orm:"pk;auto"form:"id"`
+	Name      string `orm:"size(100)"form:"name"`
+	Link		  string // 页面的路径
+	Pic       string // 图片存储的路径
+	Code		  string // 二维码存储的路径
+	Desc      string `orm:"type(text)"form:"desc-html"`
+	Markdown  string `orm:"type(text)"form:"desc-markdown"`
+	Read      uint
 }
 
+// 定义上传二维码的储存位置
 var (
-	QRPATH string = "static/public/"
+	QRPATH string = beego.AppConfig.String("QRPATH")
+	WEB_URL string = beego.AppConfig.String("WEB_URL")
 )
 
-// 增加一个二维码
+// 新增一个二维码
 func QRAddOne(code *QRCode) error{
   o := orm.NewOrm()
 
-  // 第一次插入
   _, err := o.Insert(code)
   if err != nil {
 		beego.Debug(err)
     return errors.New("添加植物失败(1)")
   }
 
-  // 第二次插入，根据其Id修改它的Link属性
-	// Link属性用来在扫码时通过id定位渲染对象
   o.Read(code)
   intid := (int)(code.Id)
-  code.Link = "http://xxx.org/plant?Id=" + strconv.Itoa(intid)
+  code.Link = "http://" + WEB_URL + "/plant?Id=" + strconv.Itoa(intid)
   _, err = o.Update(code)
   if err != nil {
 		beego.Debug(err)
@@ -57,21 +50,16 @@ func QRAddOne(code *QRCode) error{
   }
 
 	name := strings.Split(code.Name, ".")
-	// 更新二维码信息
-	// 根据链接生成二维码并存储在public目录下
-	os.Mkdir("static/public/", 0777)
-	err = qrcode.WriteFile(code.Link, qrcode.Medium, 256, QRPATH + strconv.Itoa(code.Id) + "-" + name[0] + ".png")
+	os.Mkdir(QRPATH, 0777)
+	err = qrcode.WriteFile(code.Link, qrcode.Medium, 256, "static/" + QRPATH + "/" + strconv.Itoa(code.Id) + "-" + name[0] + ".png")
 	if err != nil {
 		beego.Debug(err)
 		return errors.New("生成二维码失败！")
 	}
-	// 将二维码的存储路径填充在Code字段
 	o.Read(code)
-  // intid := (int)(code.Id)
-  // code.Link = "http://xxx.org/plant?Id=" + strconv.Itoa(intid)
 
 	beego.Debug(name)
-	code.Code = "static/public/" + strconv.Itoa(code.Id) + "-" + name[0] + ".png"
+	code.Code = QRPATH + strconv.Itoa(code.Id) + "-" + name[0] + ".png"
   _, err = o.Update(code)
 	beego.Debug(code)
   if err != nil {
@@ -81,31 +69,34 @@ func QRAddOne(code *QRCode) error{
   return nil
 }
 
-// 修改一个二维码
+// 更新一个二维码
 func QRUpdate(code *QRCode) error{
-	// 将原先的id删掉
-	// 重新add并调用原先的id
 	o := orm.NewOrm()
 	beego.Debug(code)
 	temp := QRCode{Id: code.Id}
 	if o.Read(&temp) == nil {
-		// 依次将需要更新的内容写在这里
-		//beego.Debug(ttemp)
-		// 将原先的删掉
-		// 用原先的id新建一个
 		beego.Debug(temp)
 		temp.Desc = code.Desc
 		temp.Markdown = code.Markdown
-		// if err := QRAddOne(&temp); err != nil {
-		// 	beego.Debug(err)
-		// } else {
-		// 	return nil
-		// }
-		o.Update(&temp, "Desc", "Markdown");
+		o.Update(&temp, "Desc", "Markdown")
 	}
 	return nil
 }
 
+// 增加二维码的阅读次数
+func QRRead(id int) error{
+	beego.Debug("批准")
+	beego.Debug(id)
+	o := orm.NewOrm()
+	temp := QRCode{Id: id}
+	var err error
+	if err := o.Read(&temp); err == nil {
+		temp.Read = temp.Read + 1
+		o.Update(&temp, "Read")
+	}
+	beego.Debug(err)
+	return nil
+}
 // 删除一个二维码
 func QRDel(id int) error{
   o := orm.NewOrm()
@@ -115,25 +106,25 @@ func QRDel(id int) error{
 	return nil
 }
 
-// 查找二维码
-// 查看所有文章
+// 查找所有二维码
 func QRReadAll(qrlist *[]*QRCode) {
 	o := orm.NewOrm()
 	o.QueryTable("qrcode").OrderBy("-id").All(qrlist)
 }
 
+// 返回数据库中二维码的数目（分页功能）
 func CountCodes() int64{
 	o := orm.NewOrm()
 	cnt, _ := o.QueryTable("qrcode").Count()
   return cnt
 }
 
-// ListPostsByOffsetAndLimit
+// 根据偏移和数量获取二维码（分页功能）
 func ListCodesByOffsetAndLimit(offset int, codeperpage int) (qrlist []QRCode){
 	o := orm.NewOrm()
 	// templist := make([]QRCode, 0)
 	var templist []QRCode
-	o.QueryTable("qrcode").OrderBy("-id").All(&templist)
+	o.QueryTable("qrcode").OrderBy("id").All(&templist)
 	var top int
 	if ((offset+codeperpage)>len(templist)){
 		top = len(templist)
@@ -144,7 +135,7 @@ func ListCodesByOffsetAndLimit(offset int, codeperpage int) (qrlist []QRCode){
 	return qrlist
 }
 
-// 根据ID查找
+// 根据ID查找二维码
 func QRReadById(id int) (*QRCode, error){
   o := orm.NewOrm()
   a := new(QRCode)
@@ -153,6 +144,14 @@ func QRReadById(id int) (*QRCode, error){
     return a, errors.New("没有该数据")
   }
   return a, nil
+}
+
+// 根据Name或者Desc的内容查找匹配的二维码（查找功能）
+func QRSearch(content string) (qrlist []QRCode){
+	o := orm.NewOrm()
+	o.QueryTable("qrcode").OrderBy("id").Filter("name__contains", content).Filter("markdown__contains", content).All(&qrlist)
+	beego.Debug(qrlist)
+	return
 }
 
 func (u *QRCode) TableName() string {

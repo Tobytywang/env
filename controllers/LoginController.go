@@ -1,3 +1,4 @@
+// 用户登录验证
 package controllers
 
 import (
@@ -11,7 +12,6 @@ type LoginController struct {
 }
 
 var cpt *captcha.Captcha
-// var store cache.cache
 
 func init() {
 	store := cache.NewMemoryCache()
@@ -20,9 +20,8 @@ func init() {
 	cpt.StdWidth = 150
 	cpt.StdHeight = 50
 }
-// 使用IsLogin记录登录状态
 
-// Get逻辑
+// Get方法（获取登录页面）
 func (c *LoginController) Get() {
 	flash := beego.ReadFromRequest(&c.Controller)
 
@@ -39,7 +38,7 @@ func (c *LoginController) Get() {
 	c.TplName = "login.html"
 }
 
-// Post逻辑
+// Post方法（提交登录表单）
 func (c *LoginController) Post() {
 
 	flash := beego.NewFlash()
@@ -57,7 +56,7 @@ func (c *LoginController) Post() {
 			} else {
 				beego.Debug("登录成功")
 				c.SetSession("IsLogin", true)
-				c.Redirect("/code", 302)
+				c.Redirect("/admin", 302)
 			}
 		} else {
       beego.Debug("密码错误")
@@ -72,12 +71,3 @@ func (c *LoginController) Post() {
 		c.Redirect("/login", 302)
 	}
 }
-
-// func (c *LoginController) VerifyCaptcha() {
-// 	startTime := time.Now()
-// 	captcha := c.GetString("captchaId")
-// 	captchaValue := c.GetString("captcha")
-// 	if !captcha.VerifyString(captchaId, captchaValue) {
-// 		c.Data[""]
-// 	}
-// }

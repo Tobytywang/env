@@ -17,8 +17,8 @@
     .head{-moz-box-shadow:0px 2px 5px #666666; -webkit-box-shadow:0px 2px 5px #666666; box-shadow:0px 2px 5px #666666;}
     .name h2 {text-shadow:1px 1px 5px #202020;color:#fff;}
 
-    .body h3 {margin:15px 0px 10px 0px;}
-    .body p {text-indent: 2em; margin:0px 14px 0px 14px;word-break:break-all;}
+    .body h3 {margin:15px 15px 10px 0px;}
+    .body p {text-indent: 2em;padding:0px 14px 0px 14px;word-break:break-all;}
     .body h3 {border-left:12px solid #4F9CEE;padding-left:10px;}
   </style>
 </head>
@@ -30,25 +30,8 @@
 	    </div>
 	  </div><!-- head -->
 
-	  <div class="body" style="position:fixed;overflow:auto;">
-	   <h3>形态特征</h3>
-	   <p>亚灌木状草本，高可达90厘米。茎钝四稜形，具浅槽，无毛。叶卵圆形或三角状卵圆形，长2.5-7厘米，宽2-4.5厘米，先端渐尖，基部截形或圆形，稀钝，边缘具锯齿，上面绿色，下面较淡，两面无毛，下面具腺点；茎生叶叶柄长3-4.5厘米，无毛。</p>
-	    <h3>物种分布</h3>
-	    <p>原产于巴西，我国各地广泛栽培。</p>
-	    <h3>生活习性</h3>
-	    <p>喜阳，也耐半阴，一串红要求疏松、肥沃和排水良好的砂质壤土。而对用甲基溴化物处理土壤和碱性土壤反应非常敏感，适宜于pH5.5—6.0的土壤中生长。耐寒性差，生长适温20－25摄氏度。15摄氏度以下停止生长，10摄氏度以下叶片枯黄脱落。</p>
-	       <h3>形态特征</h3>
-	   <p>亚灌木状草本，高可达90厘米。茎钝四稜形，具浅槽，无毛。叶卵圆形或三角状卵圆形，长2.5-7厘米，宽2-4.5厘米，先端渐尖，基部截形或圆形，稀钝，边缘具锯齿，上面绿色，下面较淡，两面无毛，下面具腺点；茎生叶叶柄长3-4.5厘米，无毛。</p>
-	    <h3>物种分布</h3>
-	    <p>原产于巴西，我国各地广泛栽培。</p>
-	    <h3>生活习性</h3>
-	    <p>喜阳，也耐半阴，一串红要求疏松、肥沃和排水良好的砂质壤土。而对用甲基溴化物处理土壤和碱性土壤反应非常敏感，适宜于pH5.5—6.0的土壤中生长。耐寒性差，生长适温20－25摄氏度。15摄氏度以下停止生长，10摄氏度以下叶片枯黄脱落。</p>
-	       <h3>形态特征</h3>
-	   <p>亚灌木状草本，高可达90厘米。茎钝四稜形，具浅槽，无毛。叶卵圆形或三角状卵圆形，长2.5-7厘米，宽2-4.5厘米，先端渐尖，基部截形或圆形，稀钝，边缘具锯齿，上面绿色，下面较淡，两面无毛，下面具腺点；茎生叶叶柄长3-4.5厘米，无毛。</p>
-	    <h3>物种分布</h3>
-	    <p>原产于巴西，我国各地广泛栽培。</p>
-	    <h3>生活习性</h3>
-	    <p>喜阳，也耐半阴，一串红要求疏松、肥沃和排水良好的砂质壤土。而对用甲基溴化物处理土壤和碱性土壤反应非常敏感，适宜于pH5.5—6.0的土壤中生长。耐寒性差，生长适温20－25摄氏度。15摄氏度以下停止生长，10摄氏度以下叶片枯黄脱落。</p>
+	  <div class="body" style="overflow:auto;position:fixed;">
+      {{str2html .Plant.Desc}}
 	  </div><!-- body -->
   <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
   <script type="text/javascript">
@@ -67,24 +50,24 @@
         $(".body").height($(window).height()*0.6);
         $(".body").width($(window).width());
       	$(".body").css("top", h);
-        $(".body").css("left", "0px");
+        $(".body").css("left", 0);
         $(".name").css("bottom", "10px");
         $(".name").css("right", "15px");
       } else {
         console.log("宽屏幕" + $(window).width() + " * " + $(window).height());
-        if ($(window).width()*0.4<200) {
+        if ($(window).width()*0.45<200) {
           w = 200;
         } else {
-          w = $(window).width()*0.4;
+          w = $(window).width()*0.45;
         }
         $(".head").width(w);
         $(".head").height($(window).height());
       	$(".head").css("top", "0px");
         $(".head").css("left", "0px");
-        $(".body").width($(window).width()*0.6);
+        $(".body").width($(window).width()*0.55 - 20);
         $(".body").height($(window).height());
       	$(".body").css("top", "0px");
-        $(".body").css("left", w);
+        $(".body").css("left", w+20);
         $(".name").css("bottom", "10px");
         $(".name").css("right", "15px");
       }
@@ -110,19 +93,19 @@
         $(".name").css("right", "15px");
       } else {
         console.log("宽屏幕" + $(window).width() + " * " + $(window).height());
-        if ($(window).width()*0.4<200) {
+        if ($(window).width()*0.45<200) {
           w = 200;
         } else {
-          w = $(window).width()*0.4;
+          w = $(window).width()*0.45;
         }
         $(".head").width(w);
         $(".head").height($(window).height());
       	$(".head").css("top", "0px");
         $(".head").css("left", "0px");
-        $(".body").width($(window).width()*0.6);
+        $(".body").width($(window).width()*0.55 - 20);
         $(".body").height($(window).height());
       	$(".body").css("top", "0px");
-        $(".body").css("left", w);
+        $(".body").css("left", w+20);
         $(".name").css("bottom", "10px");
         $(".name").css("right", "15px");
       }

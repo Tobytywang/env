@@ -1,10 +1,9 @@
+// 集合二维码的管理功能
 package controllers
 
 import (
   "os"
   "time"
-  "strconv"
-  "math/rand"
   "env/models"
 	"github.com/astaxie/beego"
   _ "github.com/beego/i18n"
@@ -12,35 +11,33 @@ import (
 )
 
 type QRCodeController struct {
-	beego.Controller
+	BaseController
 }
 
-func (c *QRCodeController) Prepare() {
-  if c.GetSession("IsLogin") == "" || c.GetSession("IsLogin") == nil {
-    c.Redirect("/login", 302)
-  }
-  // beego.Debug(c.GetSession("IsLogin"))
-}
+// // 用户身份验证
+// func (c *QRCodeController) Prepare() {
+//   if c.GetSession("IsLogin") == "" || c.GetSession("IsLogin") == nil {
+//     c.Redirect("/login", 302)
+//   }
+// }
 
+// Get方法查看所有的二维码
 func (c *QRCodeController) Get() {
-  // 默认执行的Get方法将返回所有的二维码数据
   qrlist := make([]*models.QRCode, 0)
   models.QRReadAll(&qrlist)
 
   codesPerPage := 15
   paginator := pagination.SetPaginator(c.Ctx, codesPerPage, models.CountCodes())
 
-  // beego.Debug(models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage))
   c.Data["QRList"] = models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage)
-  //c.Data["QRList"] = qrlist
   c.TplName = "qrcode.html"
 }
 
+// Add方法增加一个二维码
 func (c *QRCodeController) Add() {
   if id, err := c.GetInt("id"); err == nil{
     if code, err := models.QRReadById(id); err == nil{
       beego.Debug(code)
-      // 没有错说明读到了对应id的内容
       c.Data["Modify"] = true
       c.Data["Code"] = code
     }
@@ -48,6 +45,7 @@ func (c *QRCodeController) Add() {
   c.TplName = "qrcode_add.html"
 }
 
+// Download方法下载一个植物的二维码
 func (c *QRCodeController) Download() {
   id, err := c.GetInt("id");
   if err != nil {
@@ -60,6 +58,8 @@ func (c *QRCodeController) Download() {
   }
   c.Ctx.Output.Download(code.Code);
 }
+
+// Del删除一个二维码
 func (c *QRCodeController) Del() {
   id, err := c.GetInt("id");
   if err != nil {
@@ -72,6 +72,17 @@ func (c *QRCodeController) Del() {
 	c.Redirect("/code", 302)
 }
 
+// Search根据内容筛选二维码
+func (c *QRCodeController) Search() {
+  content := c.GetString("content")
+  beego.Debug(content)
+  qrlist := models.QRSearch(content)
+  beego.Debug(qrlist)
+  c.Data["QRList"] = qrlist
+  c.TplName = "qrcode.html"
+}
+
+// Post增加
 func (c *QRCodeController) Post() {
   var code models.QRCode
   if err := c.ParseForm(&code); err !=nil {
@@ -80,7 +91,6 @@ func (c *QRCodeController) Post() {
   }
   filetype := c.GetString("filetype")
   beego.Debug(code)
-  // 这里是导致html解析错误的原因
   if code.Id != 0 {
     beego.Debug("id不为空")
     beego.Debug(code.Id)
@@ -94,8 +104,6 @@ func (c *QRCodeController) Post() {
   } else {
     beego.Debug("id为空")
     beego.Debug(code.Id)
-    // 有错说明没有这个id
-    // 存储文字信息
     beego.Debug("存储图片<")
     if _,err:=c.SaveFile(&code, filetype);err!=nil{
       beego.Debug(err)
@@ -104,26 +112,15 @@ func (c *QRCodeController) Post() {
     if err := models.QRAddOne(&code); err != nil {
       beego.Debug(err)
     }
-    // 存储图片
-    // _, _, err := c.GetFile("pic")
-    // if err == nil {
-    //   os.MkdirAll("static/upload/", 0777)
-    //   c.SavaToFile("pic", "static/upload/" + c.GetString("name"))
-    // } else {
-    //   beego.Debug(err)
-    // }
   }
   c.Redirect("/code", 302)
 }
 
-// 处理上传文件
-// 返回文件的路径
+// 存储上传的图片
 func (c *QRCodeController) SaveFile(p *models.QRCode, filetype string) (string, error) {
-	// 重命名为随机数
 	beego.Debug(p)
 	filepath := "static/upload/" + time.Now().Format("2006-01-02")
 	p.Pic = filepath + "/" + p.Name  + filetype
-	// 存入文件系统
 	beego.Debug(p)
 	_, _, err := c.GetFile("pic")
   beego.Debug(err)
@@ -136,18 +133,6 @@ func (c *QRCodeController) SaveFile(p *models.QRCode, filetype string) (string, 
 	} else {
 		return "", err
 	}
-	// 存入数据库
-	// models.DAdd(p)
 	beego.Debug(p)
 	return p.Pic, nil
-}
-
-func (c *QRCodeController) RandName() string {
-	var name string
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-	for i := 0; i < 10; i++ {
-		temp := r.Intn(9)
-		name = name + strconv.Itoa(temp)
-	}
-	return name
 }
