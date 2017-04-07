@@ -1,3 +1,4 @@
 env
 static/public
 static/upload
+env.tar.gz
