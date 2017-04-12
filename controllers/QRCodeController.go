@@ -29,6 +29,7 @@ func (c *QRCodeController) Get() {
   codesPerPage := 15
   paginator := pagination.SetPaginator(c.Ctx, codesPerPage, models.CountCodes())
 
+  c.Data["URL"] = beego.AppConfig.String("WEB_URL")
   c.Data["QRList"] = models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage)
   c.TplName = "qrcode.html"
 }

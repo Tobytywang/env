@@ -42,7 +42,7 @@ func QRAddOne(code *QRCode) error{
 
   o.Read(code)
   intid := (int)(code.Id)
-  code.Link = "http://" + WEB_URL + "/plant?Id=" + strconv.Itoa(intid)
+  code.Link = "http://" + WEB_URL + "/plant?id=" + strconv.Itoa(intid)
   _, err = o.Update(code)
   if err != nil {
 		beego.Debug(err)
@@ -59,7 +59,7 @@ func QRAddOne(code *QRCode) error{
 	o.Read(code)
 
 	beego.Debug(name)
-	code.Code = QRPATH + strconv.Itoa(code.Id) + "-" + name[0] + ".png"
+	code.Code = "static/" + QRPATH + "/" + strconv.Itoa(code.Id) + "-" + name[0] + ".png"
   _, err = o.Update(code)
 	beego.Debug(code)
   if err != nil {

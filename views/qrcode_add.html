@@ -59,100 +59,102 @@
     </div>
     </div>
   </nav>
-  <div class="row">
-    <div class="col-sm-2 col-md-2 col-lg-2 left" style="height:100%;background-color:#C8E6C9;color:#ffffff;">
-      <a href="/code">
-        <div>
-          <img src="/static/img/二维码.png" />
-          <span>二维码</span>
-        </div>
-      </a>
-      <a href="#">
-        <img src="/static/img/文章.png" />
-        <span>文章</span>
-      </a>
-      <a href="#">
-        <img src="/static/img/设置.png" />
-        <span>个人中心</span>
-      </a>
-    </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2 col-md-2 col-lg-2 left" style="height:100%;background-color:#C8E6C9;color:#ffffff;">
+        <a href="/code">
+          <div>
+            <img src="/static/img/二维码.png" />
+            <span>二维码</span>
+          </div>
+        </a>
+        <a href="#">
+          <img src="/static/img/文章.png" />
+          <span>文章</span>
+        </a>
+        <a href="#">
+          <img src="/static/img/设置.png" />
+          <span>个人中心</span>
+        </a>
+      </div>
     <!-- <div class="col-sm-10 col-md-10 col-lg-10" style="margin-left:120px;margin-top:50px;background-color:#ECEFF1;">-->
-    <div class="col-sm-10 col-md-10 col-lg-10" style="background-color:#ECEFF1;">
-      <div class="row">
-      	<ol class="breadcrumb" style="margin-bottom:0px;">
-      	    <li><a href="/admin">首页</a></li>
-      	    <li><a href="/code">二维码</a></li>
-      	    <li class="active">新增二维码</li>
-      	</ol>
-      </div>
-      <div class="row" style="padding-top:15px;">
-        <form id="code" action="/code" method="POST" class="form-horizontal" enctype="multipart/form-data" role="form">
-          <div class="form-group">
-            <label for="" class="col-sm-1 control-label">ID</label>
-            <div class="col-sm-9">
-              {{if .Modify}}
-              <input type="text" class="form-control" id="id" name="id" value="{{.Code.Id}}" readonly>
-              {{else}}
-              {{end}}
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="" class="col-sm-1 control-label">学名</label>
-            <div class="col-sm-9">
-              {{if .Modify}}
-              <input type="text" class="form-control" id="name" name="name" value="{{.Code.Name}}">
-              {{else}}
-              <input type="text" class="form-control" id="name" name="name" placeholder="请输入植物学名">
-              {{end}}
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="" class="col-sm-1 control-label">图片</label>
-            <div class="col-sm-9">
+      <div class="col-sm-10 col-md-10 col-lg-10" style="background-color:#ECEFF1;">
+        <div class="row">
+        	<ol class="breadcrumb" style="margin-bottom:0px;">
+        	    <li><a href="/admin">首页</a></li>
+        	    <li><a href="/code">二维码</a></li>
+        	    <li class="active">新增二维码</li>
+        	</ol>
+        </div>
+        <div class="row" style="padding-top:15px;">
+          <form id="code" action="/code" method="POST" class="form-horizontal" enctype="multipart/form-data" role="form">
+            <div class="form-group">
+              <label for="" class="col-sm-1 control-label">ID</label>
+              <div class="col-sm-9">
                 {{if .Modify}}
-                <input id="file-2" type="file" class="file" name="pic" onchange="selectFile(this);" data-show-upload="false">
+                <input type="text" class="form-control" id="id" name="id" value="{{.Code.Id}}" readonly>
                 {{else}}
-                <input id="file-2" type="file" class="file" name="pic" onchange="selectFile(this);" data-show-upload="false">
                 {{end}}
+              </div>
             </div>
-          </div>
-          <div class="form-group" style="display:none;">
-            <label for="" class="col-sm-1 control-label">文件类型</label>
-            <div class="col-sm-9">
-              {{if .Modify}}
-              <input type="text" id="FileType" name="filetype"/>
-              {{else}}
-              <input type="text" id="FileType" name="filetype"/>
-              {{end}}
+            <div class="form-group">
+              <label for="" class="col-sm-1 control-label">学名</label>
+              <div class="col-sm-9">
+                {{if .Modify}}
+                <input type="text" class="form-control" id="name" name="name" value="{{.Code.Name}}">
+                {{else}}
+                <input type="text" class="form-control" id="name" name="name" placeholder="请输入植物学名">
+                {{end}}
+              </div>
             </div>
-          </div>
-          <script type="text/javascript">
-            function selectFile(upload){
-              var filename = upload.value;
-              var mime = filename.toLowerCase().substr(filename.lastIndexOf("."));
-              var filetype = document.getElementById("FileType");
-              filetype.value = mime;
-            }
-          </script>
-      	  <div class="form-group">
-      	    <label for="" class="col-sm-1 control-label">介绍</label>
-      	    <div id="desc" class="col-sm-9" style="padding-left:15px; padding-right:15px;">
-                <textarea class="form-control editormd-markdown-textarea" name="desc-markdown">{{.Code.Markdown}}</textarea>
-                <textarea class="form-control editormd-html-textarea" name="desc-html"></textarea>
-      	    </div>
-      	  </div>
-          <div class="form-group">
-            <div class="col-sm-offset-9 col-sm-1">
-              <button type="submit" class="btn btn-primary">提交</button>
+            <div class="form-group">
+              <label for="" class="col-sm-1 control-label">图片</label>
+              <div class="col-sm-9">
+                  {{if .Modify}}
+                  <input id="file-2" type="file" class="file" name="pic" onchange="selectFile(this);" data-show-upload="false">
+                  {{else}}
+                  <input id="file-2" type="file" class="file" name="pic" onchange="selectFile(this);" data-show-upload="false">
+                  {{end}}
+              </div>
             </div>
-          </div>
-        </form>
-      <!--</div> 表格内容 -->
+            <div class="form-group" style="display:none;">
+              <label for="" class="col-sm-1 control-label">文件类型</label>
+              <div class="col-sm-9">
+                {{if .Modify}}
+                <input type="text" id="FileType" name="filetype"/>
+                {{else}}
+                <input type="text" id="FileType" name="filetype"/>
+                {{end}}
+              </div>
+            </div>
+            <script type="text/javascript">
+              function selectFile(upload){
+                var filename = upload.value;
+                var mime = filename.toLowerCase().substr(filename.lastIndexOf("."));
+                var filetype = document.getElementById("FileType");
+                filetype.value = mime;
+              }
+            </script>
+        	  <div class="form-group">
+        	    <label for="" class="col-sm-1 control-label">介绍</label>
+        	    <div id="desc" class="col-sm-9" style="padding-left:15px; padding-right:15px;">
+                  <textarea class="form-control editormd-markdown-textarea" name="desc-markdown">{{.Code.Markdown}}</textarea>
+                  <textarea class="form-control editormd-html-textarea" name="desc-html"></textarea>
+        	    </div>
+        	  </div>
+            <div class="form-group">
+              <div class="col-sm-offset-9 col-sm-1">
+                <button type="submit" class="btn btn-primary">提交</button>
+              </div>
+            </div>
+          </form>
+        <!--</div> 表格内容 -->
+        </div>
+        <div class="row">
+        </div><!-- 网站标识 -->
       </div>
-      <div class="row">
-      </div><!-- 网站标识 -->
     </div>
-
+  </div>
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
   <!-- Bootstrap-hover-dropdown -->
