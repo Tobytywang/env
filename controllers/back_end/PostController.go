@@ -1,4 +1,4 @@
-package controllers
+package back_end
 
 import (
 	"github.com/astaxie/beego"

@@ -1,5 +1,5 @@
 // 用户登录验证
-package controllers
+package back_end
 
 import (
 	"github.com/astaxie/beego"
@@ -35,7 +35,7 @@ func (c *LoginController) Get() {
 		c.SetSession("IsLogin", "")
 	}
 
-	c.TplName = "login.html"
+	c.TplName = "back_end/login.html"
 }
 
 // Post方法（提交登录表单）

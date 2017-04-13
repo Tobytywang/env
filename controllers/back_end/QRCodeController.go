@@ -1,17 +1,18 @@
 // 集合二维码的管理功能
-package controllers
+package back_end
 
 import (
   "os"
   "time"
   "env/models"
-	"github.com/astaxie/beego"
+  "env/controllers"
+  "github.com/astaxie/beego"
   _ "github.com/beego/i18n"
   "github.com/astaxie/beego/utils/pagination"
 )
 
 type QRCodeController struct {
-	BaseController
+  controllers.BaseController
 }
 
 // // 用户身份验证
@@ -31,7 +32,7 @@ func (c *QRCodeController) Get() {
 
   c.Data["URL"] = beego.AppConfig.String("WEB_URL")
   c.Data["QRList"] = models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage)
-  c.TplName = "qrcode.html"
+  c.TplName = "back_end/qrcode.html"
 }
 
 // Add方法增加一个二维码
@@ -43,7 +44,7 @@ func (c *QRCodeController) Add() {
       c.Data["Code"] = code
     }
   }
-  c.TplName = "qrcode_add.html"
+  c.TplName = "back_end/qrcode_add.html"
 }
 
 // Download方法下载一个植物的二维码
@@ -80,7 +81,7 @@ func (c *QRCodeController) Search() {
   qrlist := models.QRSearch(content)
   beego.Debug(qrlist)
   c.Data["QRList"] = qrlist
-  c.TplName = "qrcode.html"
+  c.TplName = "back_end/qrcode.html"
 }
 
 // Post增加
