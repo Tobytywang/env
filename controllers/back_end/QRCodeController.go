@@ -32,7 +32,9 @@ func (c *QRCodeController) Get() {
 
   c.Data["URL"] = beego.AppConfig.String("WEB_URL")
   c.Data["QRList"] = models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage)
-  c.TplName = "back_end/qrcode.html"
+  // c.TplName = "back_end/qrcode.html"
+  c.TplName = "back_end/public.html"
+  c.Data["Tpl"] = "qrcode"
 }
 
 // Add方法增加一个二维码
@@ -44,7 +46,9 @@ func (c *QRCodeController) Add() {
       c.Data["Code"] = code
     }
   }
-  c.TplName = "back_end/qrcode_add.html"
+  // c.TplName = "back_end/qrcode_add.html"
+  c.TplName = "back_end/public.html"
+  c.Data["Tpl"] = "qrcode_add"
 }
 
 // Download方法下载一个植物的二维码
@@ -81,7 +85,9 @@ func (c *QRCodeController) Search() {
   qrlist := models.QRSearch(content)
   beego.Debug(qrlist)
   c.Data["QRList"] = qrlist
-  c.TplName = "back_end/qrcode.html"
+  // c.TplName = "back_end/qrcode.html"
+  c.TplName = "back_end/public.html"
+  c.Data["Tpl"] = "qrcode_add"
 }
 
 // Post增加

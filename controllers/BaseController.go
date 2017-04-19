@@ -16,5 +16,6 @@ func (c *BaseController) Prepare() {
 }
 
 func (c *BaseController) Get() {
-	c.TplName = "back_end/bindex.html"
+	c.TplName = "back_end/public.html"
+	c.Data["Tpl"] = "index"
 }

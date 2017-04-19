@@ -79,6 +79,13 @@
       </div>
       <div class="col-sm-10 col-md-10 col-lg-10" styl="background-color:#ECEFF1;">
 <!-- -->
+      {{if (compare .Tpl "index")}}
+        {{template "back_end/bindex.html"}}
+      {{else if (compare .Tpl "qrcode")}}
+        {{template "back_end/qrcode.html"}}
+      {{else if (compare .Tpl "qrcode_add")}}
+        {{template "back_end/qrcode_add.html"}}
+      {{end}}
       </div>
         <div class="row">
         </div><!-- 网站标识 -->
