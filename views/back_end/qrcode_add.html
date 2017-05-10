@@ -1,7 +1,9 @@
         <div class="row">
         	<ol class="breadcrumb" style="margin-bottom:0px;">
-        	    <li><a href="/admin">首页</a></li>
-        	    <li><a href="/code">二维码</a></li>
+        	    <!-- <li><a href="/admin">首页</a></li> -->
+        	    <!-- <li><a href="/code">二维码</a></li> -->
+              <li>首页</li>
+              <li>二维码</li>
         	    <li class="active">新增二维码</li>
         	</ol>
         </div>
@@ -71,30 +73,32 @@
         </div>
         <div class="row">
         </div><!-- 网站标识 -->
-  <!-- FileInput -->
-  <script src="/static/js/fileinput.js" type="text/javascript"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="/static/js/bootstrap.min.js"></script>
-  <!-- Editormd.js-->
-  <script src="/static/js/editormd.min.js"></script>
-  <script type="text/javascript">
-  //    调用编辑器
-  var testEditor;
-  $(function() {
-    testEditor = editormd("desc", {
-      width   : 768,
-      height  : 400,
-      syncScrolling : "single",
-      path    : "/static/lib/",
-      saveHTMLToTextarea : true,
-      // {{if .Modify}}
-      // markdown: "{{.Code.Markdown}}",
-      // {{end}}
-      toolbarIcons: function(){
-      	return ["undo", "redo", "|", "h3", "hr","|", "preview", "watch"]
-      }
-    });
-    // testEditor.getMarkdown();
-    testEditor.getHTML();
-  });
-  </script>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+        <!-- FileInput -->
+        <script src="/static/js/fileinput.js" type="text/javascript"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="/static/js/bootstrap.min.js"></script>
+        <!-- Editormd.js-->
+        <script src="/static/js/editormd.min.js"></script>
+        <script type="text/javascript">
+        //    调用编辑器
+        var testEditor;
+        $(function() {
+          testEditor = editormd("desc", {
+            width   : 768,
+            height  : 400,
+            syncScrolling : "single",
+            path    : "/static/lib/",
+            saveHTMLToTextarea : true,
+            // {{if .Modify}}
+            // markdown: "{{.Code.Markdown}}",
+            // {{end}}
+            toolbarIcons: function(){
+            	return ["undo", "redo", "|", "h3", "hr","|", "preview", "watch"]
+            }
+          });
+          // testEditor.getMarkdown();
+          testEditor.getHTML();
+        });
+        </script>

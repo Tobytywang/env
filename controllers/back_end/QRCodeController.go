@@ -32,6 +32,7 @@ func (c *QRCodeController) Get() {
 
   c.Data["URL"] = beego.AppConfig.String("WEB_URL")
   c.Data["QRList"] = models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage)
+  beego.Debug(models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage))
   // c.TplName = "back_end/qrcode.html"
   c.TplName = "back_end/public.html"
   c.Data["Tpl"] = "qrcode"

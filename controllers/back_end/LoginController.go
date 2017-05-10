@@ -23,6 +23,11 @@ func init() {
 
 // Get方法（获取登录页面）
 func (c *LoginController) Get() {
+
+	// 不需要密码
+	c.SetSession("IsLogin", true)
+	c.Redirect("/admin", 302)
+
 	flash := beego.ReadFromRequest(&c.Controller)
 
   // 如果输错密码
@@ -45,7 +50,7 @@ func (c *LoginController) Post() {
 	user_name := c.Input().Get("user_name")
 	user_pass := c.Input().Get("user_pass")
 	sys_name := beego.AppConfig.String("USER_NAME")
-  sys_pass := beego.AppConfig.String("USER_PASS")
+	sys_pass := beego.AppConfig.String("USER_PASS")
 	if user_name == sys_name {
 		if user_pass == sys_pass {
 			if !cpt.VerifyReq(c.Ctx.Request){
