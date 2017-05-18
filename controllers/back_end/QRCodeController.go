@@ -38,6 +38,40 @@ func (c *QRCodeController) Get() {
   c.Data["Tpl"] = "qrcode"
 }
 
+// Post增加
+func (c *QRCodeController) Post() {
+  var code models.QRCode
+  if err := c.ParseForm(&code); err !=nil {
+    beego.Debug(err)
+    c.Redirect("/code", 302)
+  }
+  filetype := c.GetString("filetype")
+  beego.Debug(code)
+  if code.Id != 0 {
+    beego.Debug("id不为空")
+    beego.Debug(code.Id)
+    if data, err := models.QRReadById(code.Id); err == nil{
+      beego.Debug(data)
+      beego.Debug(code)
+      if err := models.QRUpdate(&code); err != nil {
+        beego.Debug(err)
+      }
+    }
+  } else {
+    beego.Debug("id为空")
+    beego.Debug(code.Id)
+    beego.Debug("存储图片<")
+    if _,err:=c.SaveFile(&code, filetype);err!=nil{
+      beego.Debug(err)
+    }
+    beego.Debug("存储图片>")
+    if err := models.QRAddOne(&code); err != nil {
+      beego.Debug(err)
+    }
+  }
+  c.Redirect("/code", 302)
+}
+
 // Add方法增加一个二维码
 func (c *QRCodeController) Add() {
   if id, err := c.GetInt("id"); err == nil{
@@ -89,40 +123,6 @@ func (c *QRCodeController) Search() {
   // c.TplName = "back_end/qrcode.html"
   c.TplName = "back_end/public.html"
   c.Data["Tpl"] = "qrcode_add"
-}
-
-// Post增加
-func (c *QRCodeController) Post() {
-  var code models.QRCode
-  if err := c.ParseForm(&code); err !=nil {
-    beego.Debug(err)
-    c.Redirect("/code", 302)
-  }
-  filetype := c.GetString("filetype")
-  beego.Debug(code)
-  if code.Id != 0 {
-    beego.Debug("id不为空")
-    beego.Debug(code.Id)
-    if data, err := models.QRReadById(code.Id); err == nil{
-      beego.Debug(data)
-      beego.Debug(code)
-      if err := models.QRUpdate(&code); err != nil {
-        beego.Debug(err)
-      }
-    }
-  } else {
-    beego.Debug("id为空")
-    beego.Debug(code.Id)
-    beego.Debug("存储图片<")
-    if _,err:=c.SaveFile(&code, filetype);err!=nil{
-      beego.Debug(err)
-    }
-    beego.Debug("存储图片>")
-    if err := models.QRAddOne(&code); err != nil {
-      beego.Debug(err)
-    }
-  }
-  c.Redirect("/code", 302)
 }
 
 // 存储上传的图片

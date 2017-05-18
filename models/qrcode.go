@@ -154,10 +154,12 @@ func QRSearch(content string) (qrlist []QRCode){
 	return
 }
 
+// 自定义表名
 func (u *QRCode) TableName() string {
     return "qrcode"
 }
 
+// 注册表
 func init() {
 	orm.RegisterModel(new(QRCode))
 }

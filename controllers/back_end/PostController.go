@@ -1,28 +1,28 @@
 package back_end
 
 import (
+  "env/models"
 	"env/controllers"
 	"github.com/astaxie/beego"
+  "github.com/astaxie/beego/utils/pagination"
 )
 
 type PostController struct {
   controllers.BaseController
 }
 
-
 // Get方法查看所有的文章
 func (c *PostController) Get() {
+  postlist := make([]*models.Post, 0)
+  models.PReadAll(&postlist)
 
-  // qrlist := make([]*models.QRCode, 0)
-  // models.QRReadAll(&qrlist)
+  postsPerPage := 15
+  paginator := pagination.SetPaginator(c.Ctx, postsPerPage, models.PCountPosts())
 
-  // codesPerPage := 15
-  // paginator := pagination.SetPaginator(c.Ctx, codesPerPage, models.CountCodes())
-
-  // c.Data["URL"] = beego.AppConfig.String("WEB_URL")
-  // c.Data["QRList"] = models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage)
-  // beego.Debug(models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage))
-  // // c.TplName = "back_end/qrcode.html"
+  c.Data["URL"] = beego.AppConfig.String("WEB_URL")
+  c.Data["QRList"] = models.ListPostsByOffsetAndLimit(paginator.Offset(), postsPerPage)
+  beego.Debug(models.ListPostsByOffsetAndLimit(paginator.Offset(), postsPerPage))
+  // c.TplName = "back_end/qrcode.html"
   c.TplName = "back_end/public.html"
   c.Data["Tpl"] = "post"
 }
@@ -63,7 +63,6 @@ func (c *PostController) Del() {
   // }
   c.Redirect("/post", 302)
 }
-
 
 // 查找一篇文章
 func (c *PostController) Search() {

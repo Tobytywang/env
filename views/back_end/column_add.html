@@ -1,0 +1,32 @@
+<div class="row">
+<form id="column" action="/column/add" method="POST" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-horizontal column" enctype="multipart/form-data" role="form">
+  <div class="form-group">
+    <label for="">名称</label>
+    <input type="text" class="form-control" id="name" name="name">
+  </div>
+  <div class="form-group">
+    <label for="">父分类</label>
+    <select class="form-control" name="father" id="form-field-select-1">
+      <option value="1" selected="selected" disabled="true">请选择一个父栏目</option>
+        {{range .ColumnList}}
+        {{if (compare .Deep "1")}}
+          <option value="{{.Id}}">|-{{.Name}} </option>
+        {{else if (compare .Deep "2")}}
+          <option value="{{.Id}}">&nbsp;&nbsp;&nbsp;&nbsp;|-{{.Name}} </option>
+        {{else if (compare .Deep "3")}}
+          <option value="{{.Id}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-{{.Name}} </option>
+        {{else if (compare .Deep "4")}}
+          <option value="{{.Id}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-{{.Name}} </option>
+        {{else}}
+        {{end}}
+        {{end}}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <div class="pull-right">
+      <button type="submit" class="btn btn-primary">新建栏目</button>
+    </div>
+  </div>
+</form>
+</div>

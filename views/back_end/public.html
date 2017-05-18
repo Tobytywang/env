@@ -71,7 +71,7 @@
             <span>二维码</span>
           </div>
         </a>
-        <a href="/post">
+        <a href="/column">
           <img src="/static/img/文章.png" />
           <span>栏目</span>
         </a>
@@ -94,12 +94,15 @@
         {{template "back_end/post_add.html" .}}
       {{else if (compare .Tpl "setting")}}
         {{template "back_end/setting.html" .}}
+      {{else if (compare .Tpl "column")}}
+        {{template "back_end/column.html" .}}
+      {{else if (compare .Tpl "column_add")}}
+        {{template "back_end/column_add.html" .}}
       {{end}}
       </div>
-        <div class="row">
-        </div><!-- 网站标识 -->
-      </div>
     </div>
+    <div class="row">
+    </div><!-- 网站标识 -->
   </div>
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
