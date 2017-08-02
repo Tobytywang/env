@@ -1,16 +1,26 @@
 <div class="row">
+{{if .Modify}}
+<form id="column" action="/column/modify" method="POST" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-horizontal column" enctype="multipart/form-data" role="form">
+{{else}}
 <form id="column" action="/column" method="POST" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-horizontal column" enctype="multipart/form-data" role="form">
+{{end}}
+  {{if .Modify}}
+  <div class="form-group">
+    <label for="">ID</label>
+    <input type="text" class="form-control" id="id" name="id" value="{{.Column.Id}}" readonly>
+  </div>
+  {{end}}
   <div class="form-group">
     <label for="">名称</label>
     {{if .Modify}}
-    <input type="text" class="form-control" id="name" name="name" value="{{.Column.Name}}" readonly>
+    <input type="text" class="form-control" id="name" name="name" value="{{.Column.Name}}">
     {{else}}
     <input type="text" class="form-control" id="name" name="name" value="">
     {{end}}
   </div>
   <div class="form-group">
     <label for="">父分类</label>
-    <select class="form-control">
+    <select class="form-control" id="father" name="father">
       {{if .Modify}}
         <option value="1" selected="selected" disabled="true">请选择一个父栏目</option>
       {{else}}

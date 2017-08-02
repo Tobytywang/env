@@ -1,5 +1,6 @@
 env
 static/public
 static/upload
+static/qrcode
 env.tar.gz
 .idea

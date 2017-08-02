@@ -28,9 +28,28 @@ func (c *PostController) Get() {
 }
 
 func (c *PostController) Post() {
-  var content = c.GetString("content")
-  beego.Debug(content)
-  c.TplName = "index.tpl"
+  // var content = c.GetString("content")
+  var post models.Post
+  if err := c.ParseForm(&post); err !=nil {
+    beego.Debug(err)
+    // 说明有错误，跳转到查看所有项目界面？
+    // 使用flash提示
+    c.Redirect("/post", 302)
+  }
+  if post.Id != 0 {
+    // 有Id，表示修改
+    if _, err := models.PReadById(post.Id); err == nil {
+      if err := models.PModify(&post); err != nil {
+        beego.Debug(err)
+      }
+  }
+  } else {
+    // 没有Id，表示新增
+    if err := models.PAdd(&post); err != nil {
+      beego.Debug(err)
+    } 
+  }
+  c.Redirect("/post", 302)
 }
 
 // 增加一篇文章
@@ -47,6 +66,13 @@ func (c *PostController) Add() {
   // if(c.Ctx.Input.Is("POST") == true) {
 
     // c.TplName = "index.tpl"
+  if id, err := c.GetInt("id"); err == nil{
+    if post, err := models.PReadById(id); err == nil{
+      beego.Debug(post)
+      c.Data["Modify"] = true
+      c.Data["Post"] = post
+    }
+  }
     c.TplName = "back_end/public.html"
     c.Data["Tpl"] = "post_add"
 }
@@ -61,6 +87,14 @@ func (c *PostController) Del() {
   // if err != nil {
   //   beego.Debug(err)
   // }
+  id, err := c.GetInt("id");
+  if err != nil {
+    beego.Debug(err)
+  }
+  err = models.PDel(id);
+  if err != nil {
+    beego.Debug(err)
+  }
   c.Redirect("/post", 302)
 }
 

@@ -9,6 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+// 定义栏目（数据库表）
 type Column struct {
 	Id      int   `orm:"pk;auto"`
 	Name    string `form:"name"`
@@ -20,6 +21,7 @@ type Column struct {
 	Content string `orm:"type(text)"form:"content"`
 }
 
+// 二级菜单（应该用不上）
 type MainMenu struct {
 	Id       int
 	Child    int
@@ -31,15 +33,19 @@ type MainMenu struct {
 func CAdd(c *Column) error {
 	o := orm.NewOrm()
 
+	// 填充菜单深度字段
 	columnlist := make([]*Column, 0)
 	CReadAll(&columnlist)
 	c.Deep = DeepProcess(c, columnlist, 1)
+
+	// 插入数据库
 	_, err := o.Insert(c)
 	if err != nil {
 		return errors.New("插入目录失败")
 	}
 
 	// 第二次插入，根据其Id修改它的Link属性
+	// 要设置成可配置的
 	o.Read(c)
 	id :=strconv.Itoa(c.Id) 
 	c.Link = "/column?Id=" + id
@@ -178,39 +184,61 @@ func CReadByFather(father_id int) []*Column {
 
 // 根据Id获得Tax的Content
 func CReadContentById(id int) string {
-	c := CReadById(id)
+	c,_ := CReadById(id)
+
 	return c.Content
 }
 
 // 根据Id获得一个Tax
-func CReadById(id int) *Column {
+func CReadById(id int) (*Column, error) {
 	o := orm.NewOrm()
-
+	// c := new(Column)
 	var c Column
+
 	o.QueryTable("tax").Filter("id", id).One(&c)
+	if c.Id == 0{
+		return &c, errors.New("没有该数据")
+	}
 
 	// 可能会出现id不在数据库中的错误
-	return &c
+	return &c, nil
 }
 
-// 根据结构体修改
-func CModify(c *Column) error {
-	o := orm.NewOrm()
+// // 根据ID查找二维码
+// func QRReadById(id int) (*QRCode, error){
+//   o := orm.NewOrm()
+//   a := new(QRCode)
+//   o.QueryTable("qrcode").Filter("id", id).One(a)
+//   if a.Id == 0 {
+//     return a, errors.New("没有该数据")
+//   }
+//   return a, nil
+// }
 
+// 根据结构体修改
+func CModify(c *Column) (err error) {
+	o := orm.NewOrm()
+	beego.Debug(c)
+	beego.Debug(c.Id)
 	ctemp := Column{Id: c.Id}
-	if o.Read(&ctemp) == nil {
+	if err = o.Read(&ctemp); err == nil {
 		ctemp = *c
+		// 修改优先级
+		columnlist := make([]*Column, 0)
+		CReadAll(&columnlist)
+		ctemp.Deep = DeepProcess(c, columnlist, 1)
 		//beego.Debug(ttemp)
 		if _, err := o.Update(&ctemp); err != nil {
 			beego.Debug(err)
 			errors.New("修改目录失败")
 		} else {
+			// 修改目录成功，把优先级修改掉
 			return nil
 		}
 		beego.Debug(ctemp)
 	}
-
-	return errors.New("修改目录失败")
+	return err
+	// return errors.New("修改目录失败")
 }
 
 // 删除一个目录

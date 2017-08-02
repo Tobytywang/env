@@ -20,7 +20,7 @@ type Post struct {
 }
 
 // 新增一个文章
-func PAddOne(post *Post) error{
+func PAdd(post *Post) error{
   o := orm.NewOrm()
 
   // 
@@ -62,7 +62,7 @@ func PAddOne(post *Post) error{
 }
 
 // 更新一个文章
-func PUpdate(post *Post) error{
+func PModify(post *Post) error{
   o := orm.NewOrm()
   beego.Debug(post)
   temp := Post{Id: post.Id}
@@ -76,7 +76,7 @@ func PUpdate(post *Post) error{
 }
 
 // 删除一个文章
-func PDelOne(id int) error{
+func PDel(id int) error{
   o := orm.NewOrm()
   if _, err := o.Delete(&Post{Id: id}); err != nil {
     return errors.New("删除文章失败")
