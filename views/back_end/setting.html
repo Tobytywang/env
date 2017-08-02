@@ -1,3 +1,95 @@
-<h3>
-	这是设置页面
-</h3>
+<div class="row" style="padding-top:15px;">
+  <form id="code" action="/setting" method="POST" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-horizontal" enctype="multipart/form-data" role="form">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+      <label for="" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">网站用户名</label>
+      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        {{if .Modify}}
+        <input type="text" class="form-control" id="username" name="username" value="{{.username}}" readonly>
+        {{else}}
+        <input type="text" class="form-control" id="username" name="username"> 
+        {{end}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+      <label for="" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">网站密码</label>
+      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        {{if .Modify}}
+        <input type="text" class="form-control" id="password" name="passwrod" value="{{.password}}" readonly>
+        {{else}}
+        <input type="text" class="form-control" id="password" name="password"> 
+        {{end}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+      <label for="" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">数据库名</label>
+      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        {{if .Modify}}
+        <input type="text" class="form-control" id="db_name" name="db_name" value="{{.db_name}}" readonly>
+        {{else}}
+        <input type="text" class="form-control" id="db_name" name="db_name"> 
+        {{end}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+      <label for="" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">数据库用户名</label>
+      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        {{if .Modify}}
+        <input type="text" class="form-control" id="db_user" name="db_user" value="{{.db_user}}" readonly>
+        {{else}}
+        <input type="text" class="form-control" id="db_user" name="db_user"> 
+        {{end}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+      <label for="" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">数据库密码</label>
+      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        {{if .Modify}}
+        <input type="text" class="form-control" id="db_pass" name="db_pass" value="{{.db_pass}}" readonly>
+        {{else}}
+        <input type="text" class="form-control" id="db_pass" name="db_pass"> 
+        {{end}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+      <label for="" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">网址</label>
+      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+        {{if .Modify}}
+        <input type="text" class="form-control" id="web_url" name="web_url" value="{{.web_url}}" readonly>
+        {{else}}
+        <input type="text" class="form-control" id="web_url" name="web_url"> 
+        {{end}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+      <label for="" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">Logo</label>
+      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+          {{if .Modify}}
+          <input id="logo" type="file" class="file" name="logo" onchange="selectFile(this);" data-show-upload="false">
+          {{else}}
+          <input id="logo" type="file" class="file" name="logo" onchange="selectFile(this);" data-show-upload="false">
+          {{end}}
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+      <label for="" class="col-xs-2 col-sm-2 col-md-2 col-lg-2 control-label">Logo</label>
+      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+          {{if .Modify}}
+          <input id="favicon" type="file" class="file" name="favicon" onchange="selectFile(this);" data-show-upload="false">
+          {{else}}
+          <input id="favicon" type="file" class="file" name="favicon" onchange="selectFile(this);" data-show-upload="false">
+          {{end}}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-5 col-sm-2">
+        <button type="submit" class="btn btn-primary">提交</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<!-- FileInput -->
+<script src="/static/js/fileinput.js" type="text/javascript"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/static/js/bootstrap.min.js"></script>

@@ -46,11 +46,22 @@
         </tr>
       </thead>
       <tbody>
-        {{range .QRList}}
+        {{range .ColumnList}}
         <tr>
           <td>{{.Id}}</td>
-          <td><a>{{.Name}}</a></td>
-          <td><a href="{{.Link}}" target="_blank"></a></td>
+          <td><a>
+              {{if (compare .Deep "1")}}
+                |-{{.Name}} </option>
+              {{else if (compare .Deep "2")}}
+                &nbsp;&nbsp;&nbsp;&nbsp;|-{{.Name}}
+              {{else if (compare .Deep "3")}}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-{{.Name}}
+              {{else if (compare .Deep "4")}}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|-{{.Name}}
+              {{else}}
+                栏目超出最大长度！
+              {{end}}</a></td>
+          <td><a href="" target="_blank">3</a></td>
           <td>
             <a href="/column/add?id={{.Id}}" type="button" class="btn btn-sm btn-primary ">编辑</a>
             <a href="/column/del?id={{.Id}}" type="button" class="btn btn-sm btn-danger ">删除</a>

@@ -26,7 +26,7 @@ func init() {
 	beego.Router("/column", &back_end.ColumnController{})
 	beego.Router("/column/add", &back_end.ColumnController{}, "get:Add")
 	beego.Router("/column/del", &back_end.ColumnController{}, "get:Del")
-	// beego.Router("/column/search", &back_end.ColumnController{}, "get,post:Search")
+	beego.Router("/column/search", &back_end.ColumnController{}, "get,post:Search")
 	// 二维码链接
 	beego.Router("/code", &back_end.QRCodeController{})
 	beego.Router("/code/add", &back_end.QRCodeController{}, "get:Add")
