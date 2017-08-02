@@ -40,6 +40,11 @@ func init() {
 	beego.Router("/post/add", &back_end.PostController{}, "get,post:Add")
 	beego.Router("/post/del", &back_end.PostController{}, "get:Del")
 	beego.Router("/post/search", &back_end.PostController{}, "get,post:Search")
+	// 图片链接
+	beego.Router("/picture", &back_end.PictureController{})
+	beego.Router("/picture/add", &back_end.PictureController{}, "get,post:Add")
+	beego.Router("/picture/del", &back_end.PictureController{}, "get:Del")
+	beego.Router("/picture/search", &back_end.PictureController{}, "get,post:Search")
 	// 设置链接
 	beego.Router("/setting", &back_end.SettingController{})
 }

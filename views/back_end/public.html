@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>标题</title>
+  <title>净菊后台管理系统</title>
 
   <!-- Fontawesome -->
   <link rel="stylesheet" href="/static/css/font-awesome.min.css">
@@ -106,6 +106,10 @@
         {{template "back_end/column.html" .}}
       {{else if (compare .Tpl "column_add")}}
         {{template "back_end/column_add.html" .}}
+      {{else if (compare .Tpl "picture")}}
+        {{template "back_end/picture.html" .}}
+      {{else if (compare .Tpl "picture_add")}}
+        {{template "back_end/picture_add.html" .}}
       {{end}}
       </div>
     </div>
