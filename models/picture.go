@@ -13,5 +13,6 @@ type SizeOfPicture struct {
 type Picture struct {
 	Name    string `form:"name"`
 	Path    string
+	Link    string
 	SizeOfPicture
 }

@@ -70,15 +70,23 @@ func QRAddOne(code *QRCode) error{
 }
 
 // 更新一个二维码
+// 1. 内容
+// 2. 名字
+// 3. 图片
+// 4. 链接和目录?
+// *: link和qrcode都是一样的，只有图片需要重新上传
 func QRUpdate(code *QRCode) error{
 	o := orm.NewOrm()
+	beego.Debug("QRcode")
 	beego.Debug(code)
 	temp := QRCode{Id: code.Id}
 	if o.Read(&temp) == nil {
 		beego.Debug(temp)
 		temp.Desc = code.Desc
 		temp.Markdown = code.Markdown
-		o.Update(&temp, "Desc", "Markdown")
+		temp.Name = code.Name
+		temp.Pic = code.Pic
+		o.Update(&temp, "Desc", "Markdown", "Name", "Pic")
 	}
 	return nil
 }
@@ -149,7 +157,10 @@ func QRReadById(id int) (*QRCode, error){
 // 根据Name或者Desc的内容查找匹配的二维码（查找功能）
 func QRSearch(content string) (qrlist []QRCode){
 	o := orm.NewOrm()
-	o.QueryTable("qrcode").OrderBy("id").Filter("name__contains", content).Filter("markdown__contains", content).All(&qrlist)
+	// o.QueryTable("qrcode").OrderBy("id").Filter("name__contains", content).Filter("markdown__contains", content).All(&qrlist)
+	cond := orm.NewCondition()
+	cond1 := cond.Or("name__contains", content).Or("markdown__contains", content)
+	o.QueryTable("qrcode").SetCond(cond1).All(&qrlist)
 	beego.Debug(qrlist)
 	return
 }

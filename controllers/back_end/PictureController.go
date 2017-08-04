@@ -18,38 +18,6 @@ type PictureController struct {
 
 // 查看（Get）功能
 func (c *PictureController) Get() {
-  // postlist := make([]*models.Post, 0)
-  // models.PReadAll(&postlist)
-
-  // postsPerPage := 15
-  // paginator := pagination.SetPaginator(c.Ctx, postsPerPage, models.PCountPosts())
-
-  // c.Data["URL"] = beego.AppConfig.String("WEB_URL")
-  // c.Data["QRList"] = models.ListPostsByOffsetAndLimit(paginator.Offset(), postsPerPage)
-  // beego.Debug(models.ListPostsByOffsetAndLimit(paginator.Offset(), postsPerPage))
-  // c.TplName = "back_end/qrcode.html"
-
-  // 查找指定目录下的所有图片以供显示
-  // 显示内容包括名称，引用路径和大小
-  // 以及一个预览按钮，一个删除按钮
-  // 一个查找框
-  ////////////////////////////////////////////////////////
-  // var pic_list []String
-  // pwd, _ := os.Getwd()
-  // beego.Debug(pwd)
-  // dir, err := os.OpenFile(pwd, os.O_RDONLY, os.ModeDir)
-  // if err != nil {
-  //   defer dir.Close()
-  //   // 打debug
-  //   return
-  // }
-  // //fileinfo, _ := dir.Stat()
-  // names, _ := dir.Readdir(-1)
-  // for _, name := range names{
-  //   if !name.IsDir() {
-  //     beego.Debug(name.Name())
-  //   }
-  // }
   beego.Debug("图片")
   ///////////////////////////////////////////////////////
   // files := make([]string, 0)
@@ -70,6 +38,7 @@ func (c *PictureController) Get() {
         var file models.Picture
         file.Name = fi.Name()
         file.Path = "static/picture" + PthSep + fi.Name()
+        file.Link = "http://" + beego.AppConfig.String("WEB_URL") + "/static/picture" + PthSep + fi.Name()
         pngfile, err := os.Open(file.Path)
         if err!=nil {
           beego.Debug(err)
@@ -84,24 +53,7 @@ func (c *PictureController) Get() {
       }
     }
   }
-  // 将所有文件都显示出来
-  // pngs := make([]models.Picture, 0)
-  // for _, file := range files {
-  //     png := make(models.Picture)
-  //     png.Name = file
-  //     png.Path = 
-  //     pngs = append(files, )
-  // }
-  //////////////////////////////////////////////////////
   beego.Debug(files)
-  // c.Ctx.Output.Download(files[0])
-  // pngfile, err := os.Open(files[0])
-  // if err != nil {
-  //   beego.Debug(err)
-  // }
-  // img, err := png.DecodeConfig(pngfile)
-  // beego.Debug(img)
-  //////////////////////////////////////////////////////
   c.Data["Picture"] = files
   c.TplName = "back_end/public.html"
   c.Data["Tpl"] = "picture"
@@ -135,27 +87,20 @@ func (c *PictureController) Post() {
 
 // 增加（Add）功能
 func (c *PictureController) Add() {
-  // if id, err := c.GetInt("id"); err == nil{
-  //   if code, err := models.QRReadById(id); err == nil{
-  //     beego.Debug(code)
-  //     c.Data["Modify"] = true
-  //     c.Data["Code"] = code
-  //   }
-  // }
-  // // c.TplName = "back_end/qrcode_add.html"
-  ////////////////////////////////////////////////////
-  // if(c.Ctx.Input.Is("POST") == true) {
-
-    // c.TplName = "index.tpl"
-  if id, err := c.GetInt("id"); err == nil{
-    if post, err := models.PReadById(id); err == nil{
-      beego.Debug(post)
-      c.Data["Modify"] = true
-      c.Data["Post"] = post
+  // 增加上传图片功能
+  filepath := "static/picture"
+  _, _, err := c.GetFile("pic")
+  name := c.GetString("name")
+  filetype := c.GetString("filetype")
+  beego.Debug(err)
+  if err == nil {
+    os.MkdirAll(filepath, 0777)
+    if err:=c.SaveToFile("pic", filepath+"/"+name + filetype); err!=nil{
+      beego.Debug(err)
     }
   }
-    c.TplName = "back_end/public.html"
-    c.Data["Tpl"] = "picture_add"
+  c.TplName = "back_end/public.html"
+  c.Data["Tpl"] = "picture"
 }
 
 // 删除（Del）功能

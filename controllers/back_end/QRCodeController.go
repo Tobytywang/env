@@ -39,6 +39,8 @@ func (c *QRCodeController) Get() {
 }
 
 // Post增加
+// 增加逻辑：没有id
+// 修改逻辑：有id
 func (c *QRCodeController) Post() {
   var code models.QRCode
   if err := c.ParseForm(&code); err !=nil {
@@ -53,9 +55,14 @@ func (c *QRCodeController) Post() {
     if data, err := models.QRReadById(code.Id); err == nil{
       beego.Debug(data)
       beego.Debug(code)
+      if _,err:=c.SaveFile(&code, filetype);err!=nil{
+        beego.Debug(err)
+      }
+      beego.Debug(code)
       if err := models.QRUpdate(&code); err != nil {
         beego.Debug(err)
       }
+      beego.Debug("更新成功")
     }
   } else {
     beego.Debug("id为空")
@@ -122,7 +129,7 @@ func (c *QRCodeController) Search() {
   c.Data["QRList"] = qrlist
   // c.TplName = "back_end/qrcode.html"
   c.TplName = "back_end/public.html"
-  c.Data["Tpl"] = "qrcode_add"
+  c.Data["Tpl"] = "qrcode"
 }
 
 // 存储上传的图片
