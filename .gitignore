@@ -2,5 +2,7 @@ env
 static/public
 static/upload
 static/qrcode
+static/picture
+static/img
 env.tar.gz
 .idea
