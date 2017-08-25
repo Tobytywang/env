@@ -23,19 +23,8 @@
   </div>
 </div><!-- 快速操作 -->
 <div class="row">
-  {{if (compare .Type "index")}}
-  <div class="col-sm-4 col-md-4 col-lg-4">
-  {{else}}
-  <div class="col-sm-0 col-md-0 col-lg-0">
-  {{end}}
-  {{template "back_end/column_add.html" .}}
-  </div>
 
-  {{if (compare .Type "index")}}
   <div class="col-sm-8 col-md-8 col-lg-8">
-  {{else}}
-  <div class="col-sm-12 col-md-12 col-lg-12">       
-  {{end}}
     <table class="table table-striped">
       <thead style="background-color:#33CCCC;">
         <tr>
@@ -71,31 +60,11 @@
       </tbody>
     </table>
   </div>
-</div><!-- 表格 -->
-<!-- <div class="row" style="text-align:center;">
-  {{if .paginator.HasPages}}
-  <ul class="pagination pagination">
-      {{if .paginator.HasPrev}}
-          <li><a href="{{.paginator.PageLinkFirst}}">首页</a></li>
-          <li><a href="{{.paginator.PageLinkPrev}}">&laquo;</a></li>
-      {{else}}
-          <li class="disabled"><a>首页</a></li>
-          <li class="disabled"><a>&laquo;</a></li>
-      {{end}}
-      {{range $index, $page := .paginator.Pages}}
-          <li{{if $.paginator.IsActive .}} class="active"{{end}}>
-              <a href="{{$.paginator.PageLink $page}}">{{$page}}</a>
-          </li>
-      {{end}}
-      {{if .paginator.HasNext}}
-          <li><a href="{{.paginator.PageLinkNext}}">&raquo;</a></li>
-          <li><a href="{{.paginator.PageLinkLast}}">尾页</a></li>
-      {{else}}
-          <li class="disabled"><a>&raquo;</a></li>
-          <li class="disabled"><a>尾页</a></li>
-      {{end}}
-  </ul>
-  {{end}}
-  </div> -->
+
+
+  <div class="col-sm-4 col-md-4 col-lg-4">
+     {{template "back_end/column_add.html" .}} 
+  </div> 
+</div><!-- 表格 -->s
 <div class="row">
 </div><!-- 网站标识 -->

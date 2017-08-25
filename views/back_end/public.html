@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>净菊后台管理系统</title>
 
@@ -27,13 +26,14 @@
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
   <style>
+  html{ min-width:770px;}
   /*ul,ol{list-style-type:none;}*/
   /*.left_menu {margin:0px;padding:0px;border-bottom:1px solid #aaaaaa;verticla-align:center;height:40px;}
   .left_menu a{height:100%;width:100%;}
   .left_menu img {height:1em;width:1em;}*/
   .left a {line-height:normal;}
   .left a {text-decoration:none;display:block;height:40px;padding:5px 0px 5px 10px;border-bottom:1px solid #bbbbbb;color:#000000;}
-  .left a:hover {}
+  /* .left a:hover {} */
   .left img {height:1em;width:1em;}
   .left span {margin-left:5px;}
   </style>
@@ -42,7 +42,7 @@
   <nav class="navbar navbar-default" role="navigation" style="margin-bottom:0px;background-color:#00ca79;border:none;border-radius: 0px;">
     <div class="container-fluid" style="padding-right: 0px;">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/admin">LOGO</a>
+      <a class="navbar-brand" href="/admin">净菊湿地后台管理系统</a>
     </div>
     <div class="collapse navbar-collapse" id="example-navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
@@ -51,7 +51,6 @@
                   <span class="glyphicon glyphicon-user"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">个人中心</a></li>
                     <li><a href="#">使用帮助</a></li>
                     <li class="divider"></li>
                     <li><a href="/login?exit=true">退出登录</a></li>
