@@ -9,19 +9,18 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// 定义栏目（数据库表）
+// 定义栏目
 type Column struct {
-	Id      int   `orm:"pk;auto"`
+	Id      int    `orm:"pk;auto"`
 	Name    string `form:"name"`
 	Link    string `form:"link"`
-	Pri     int   `form:"pri"`
+	Pri     int    `form:"pri"`
 	Deep    int
-	Father  int   `form:"father"`
+	Father  int    `form:"father"`
 	Type    string `form:"type"`
 	Content string `orm:"type(text)"form:"content"`
 }
 
-// 二级菜单（应该用不上）
 type MainMenu struct {
 	Id       int
 	Child    int
@@ -33,41 +32,40 @@ type MainMenu struct {
 func CAdd(c *Column) error {
 	o := orm.NewOrm()
 
-	// 填充菜单深度字段
+	// update the deep
 	columnlist := make([]*Column, 0)
 	CReadAll(&columnlist)
-	c.Deep = DeepProcess(c, columnlist, 1)
+	c.Deep = deepProcess(c, columnlist, 1)
 
 	// 插入数据库
 	_, err := o.Insert(c)
 	if err != nil {
-		return errors.New("插入目录失败")
+		return err
 	}
 
-	// 第二次插入，根据其Id修改它的Link属性
-	// 要设置成可配置的
-	o.Read(c)
-	id :=strconv.Itoa(c.Id) 
+	err = o.Read(c)
+	if err != nil {
+		return err
+	}
+
+	id := strconv.Itoa(c.Id)
 	c.Link = "/column?Id=" + id
 	_, err = o.Update(c)
 	if err != nil {
-		return errors.New("修改link失败")
+		return err
 	}
 	return nil
 }
 
 // 计算新加入项目的深度
-func DeepProcess(c *Column, clist []*Column, deep int) int {
+func deepProcess(c *Column, clist []*Column, deep int) int {
 	if c.Father != 0 {
 		for i := 0; i < len(clist); i++ {
 			if c.Father == clist[i].Id {
 				deep = deep + 1
 				ctemp := clist[i]
 				clist[i].Id = 0
-				for j := 0; j < len(clist); j++ {
-					//beego.Debug("   ", tlist[j])
-				}
-				deep = DeepProcess(ctemp, clist, deep)
+				deep = deepProcess(ctemp, clist, deep)
 			}
 		}
 	}
@@ -77,18 +75,13 @@ func DeepProcess(c *Column, clist []*Column, deep int) int {
 // 如何能做到在排序的时候对优先级大的项目优先排序
 func SortColumn(id int, slist []*Column, dlist []*Column) ([]*Column, []*Column) {
 
-	//	beego.Debug("=========开始==========")
-	//	beego.Debug("这次寻找FatherId=", id, "的项目")
 	var templist []*Column
 	for i := 0; i < len(slist); i++ {
 		if slist[i].Father == id {
 			templist = append(templist, slist[i])
 		}
 	}
-	// 第二步
-	// 沉底法
-	// 	beego.Debug("沉底排序开始")
-	// 沉底排序有问题？
+
 	for i := 0; i < (len(templist) - 1); i++ {
 		for j := 0; j < (len(templist) - 1); j++ {
 			if templist[j].Pri < templist[j+1].Pri {
@@ -98,16 +91,12 @@ func SortColumn(id int, slist []*Column, dlist []*Column) ([]*Column, []*Column)
 			}
 		}
 	}
-	//	beego.Debug("沉底排序结束")
 
-	for i := 0; i < len(templist); i++ {
-		//		beego.Debug(templist[i])
-	}
 	for i := 0; i < len(templist); i++ {
 		dlist = append(dlist, templist[i])
 		dlist, slist = SortColumn(templist[i].Id, slist, dlist)
 	}
-	//	beego.Debug("=========结束==========")
+
 	return dlist, slist
 }
 
@@ -134,8 +123,6 @@ func CFindSon(id int, slist []*Column, dlist []*Column) ([]*Column, []*Column) {
 	return templist, slist
 }
 
-// 输入一个节点，依次返回他的父系节点
-// 输入的应该是一个Father
 func CFindFather(id int, slist []*Column, dlist []*Column) []*Column {
 	o := orm.NewOrm()
 	u := new(Column)
@@ -147,9 +134,6 @@ func CFindFather(id int, slist []*Column, dlist []*Column) []*Column {
 				dlist = CFindFather(slist[i].Father, slist, dlist)
 			}
 		}
-	}
-	for i := 0; i < len(dlist); i++ {
-		//		beego.Debug(dlist[i])
 	}
 	return dlist
 }
@@ -184,7 +168,7 @@ func CReadByFather(father_id int) []*Column {
 
 // 根据Id获得Tax的Content
 func CReadContentById(id int) string {
-	c,_ := CReadById(id)
+	c, _ := CReadById(id)
 
 	return c.Content
 }
@@ -196,24 +180,13 @@ func CReadById(id int) (*Column, error) {
 	var c Column
 
 	o.QueryTable("tax").Filter("id", id).One(&c)
-	if c.Id == 0{
+	if c.Id == 0 {
 		return &c, errors.New("没有该数据")
 	}
 
 	// 可能会出现id不在数据库中的错误
 	return &c, nil
 }
-
-// // 根据ID查找二维码
-// func QRReadById(id int) (*QRCode, error){
-//   o := orm.NewOrm()
-//   a := new(QRCode)
-//   o.QueryTable("qrcode").Filter("id", id).One(a)
-//   if a.Id == 0 {
-//     return a, errors.New("没有该数据")
-//   }
-//   return a, nil
-// }
 
 // 根据结构体修改
 func CModify(c *Column) (err error) {
@@ -226,19 +199,16 @@ func CModify(c *Column) (err error) {
 		// 修改优先级
 		columnlist := make([]*Column, 0)
 		CReadAll(&columnlist)
-		ctemp.Deep = DeepProcess(c, columnlist, 1)
+		ctemp.Deep = deepProcess(c, columnlist, 1)
 		//beego.Debug(ttemp)
-		if _, err := o.Update(&ctemp); err != nil {
-			beego.Debug(err)
-			errors.New("修改目录失败")
+		_, err := o.Update(&ctemp)
+		if err != nil {
+			return err
 		} else {
-			// 修改目录成功，把优先级修改掉
 			return nil
 		}
-		beego.Debug(ctemp)
 	}
 	return err
-	// return errors.New("修改目录失败")
 }
 
 // 删除一个目录
@@ -254,7 +224,7 @@ func CDel(id int) error {
 
 // 自定义表名
 func (u *Column) TableName() string {
-    return "tax"
+	return "tax"
 }
 
 func init() {

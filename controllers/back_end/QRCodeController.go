@@ -110,11 +110,11 @@ func (c *QRCodeController) Del() {
 // Search根据内容筛选二维码
 func (c *QRCodeController) Search() {
 	content := c.GetString("content")
-	beego.Debug(content)
+
 	qrlist := models.QRSearch(content)
-	beego.Debug(qrlist)
+
 	c.Data["QRList"] = qrlist
-	// c.TplName = "back_end/qrcode.html"
+
 	c.TplName = "back_end/public.html"
 	c.Data["Tpl"] = "qrcode"
 }

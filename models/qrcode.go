@@ -135,7 +135,7 @@ func CountCodes() int64 {
 	return cnt
 }
 
-func ListCodesByOffsetAndLimit(offset int, codeperpage int) []QRCodeExt {
+func ListCodesByOffsetAndLimit(offset int, codeperpage int) (destlist []QRCodeExt) {
 	o := orm.NewOrm()
 	var qrlist []QRCode
 	var templist []QRCode
@@ -149,7 +149,6 @@ func ListCodesByOffsetAndLimit(offset int, codeperpage int) []QRCodeExt {
 	}
 	qrlist = templist[offset:top]
 
-	var destlist []QRCodeExt
 	var qrcodeext QRCodeExt
 	for _, qr := range qrlist {
 		qrcodeext.QRCode = qr
@@ -165,12 +164,24 @@ func ListCodesByOffsetAndLimit(offset int, codeperpage int) []QRCodeExt {
 }
 
 // 重点改造
-func QRSearch(content string) (qrlist []QRCode) {
+func QRSearch(content string) (destlist []QRCodeExt) {
 	o := orm.NewOrm()
 	cond := orm.NewCondition()
 	cond1 := cond.Or("name__contains", content).Or("markdown__contains", content)
+	var qrlist []QRCode
 	o.QueryTable("qrcode").SetCond(cond1).All(&qrlist)
-	return
+
+	var qrcodeext QRCodeExt
+	for _, qr := range qrlist {
+		qrcodeext.QRCode = qr
+		if _, err := os.Stat(qr.Pic); os.IsNotExist(err) {
+			qrcodeext.PicExist = false
+		} else {
+			qrcodeext.PicExist = true
+		}
+		destlist = append(destlist, qrcodeext)
+	}
+	return destlist
 }
 
 func create_qrcode(code *QRCode, name []string) (path string, err error) {
