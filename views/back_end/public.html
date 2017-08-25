@@ -51,7 +51,7 @@
                   <span class="glyphicon glyphicon-user"></span>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">使用帮助</a></li>
+                    <li><a href="/help">使用帮助</a></li>
                     <li class="divider"></li>
                     <li><a href="/login?exit=true">退出登录</a></li>
                     <!-- <li class="divider"></li> -->
@@ -107,6 +107,8 @@
         {{template "back_end/column_add.html" .}}
       {{else if (compare .Tpl "picture")}}
         {{template "back_end/picture.html" .}}
+      {{else if (compare .Tpl "help")}}
+        {{template "back_end/help.html" .}}
       {{end}}
       </div>
     </div>

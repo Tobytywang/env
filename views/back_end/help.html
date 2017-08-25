@@ -1,0 +1,45 @@
+<div class="row">
+  <ol class="col-xs-12 col-sm-12 col-md-12 col-lg-12 breadcrumb" style="margin-bottom:0px;">
+      <li><a href="/admin">首页</a></li>
+      <li>帮助</li>
+  </ol>
+</div>
+<div class="row" data-spy="scroll" data-target="#myScrollspy">
+  <div class="col-sm-10 col-md-10 col-lg-10" style="height:1000px;">
+    <h3 id="qrcode">二维码管理</h3>
+        <p>二维码管理包括<a href="/code/add">新增二维码</a>和<a href="/code">查看二维码</a>，也可以修改已经添加页面的信息。</p>
+        <p>新增二维码可以根据传入的图片和一段简短的介绍生成一个关于该植物的介绍页面和访问该页面的二维码。
+        <p>添加时需要完整填写植物的学名，图片和介绍内容。</p>
+        <p>植物图片大小建议为，格式可以是jpg,png等常用格式。</p>
+        <p>介绍内容分为标题和内容，标题部分以"### 标题"的形式表示，内容部分直接书写即可。</p>
+    <h3 id="column">栏目管理</h3>
+        <p>栏目管理可以编辑网站的各级菜单。</p>
+        <p>网站初始时有个不可删除的栏目，在此之外可以额外添加更多的栏目。</p>
+        <p>新建栏目时可以选择栏目的类型：文章列表下可以挂载多个文章，单页类型则只能挂载一个文章，栏目类型可以挂载其他栏目但不能挂载文章。</p>
+        <p>新建栏目可以选择父栏目，选择已有栏目（必须为栏目类型）会成为栏目下的子栏目。不选择其他栏目默认为一级栏目。</p>
+    <h3 id="post">文章管理</h3>
+        <p>文章管理可以用来添加新的文章。</p>
+        <p>文章包括标题和内容，如果想在文章中添加图片，可以在图片中添加图片后使用添加链接的方式添加。</p>
+        <p>添加文章必须选择一个类型为文章列表或者为单页的栏目进行添加</p>
+    <h3 id="picture">图片管理</h3>
+        <p>在图片管理中可以添加一张图片，返回图片的链接，这个链接可以在文章管理中使用。</p>
+        <p>图片管理中只能上传png格式的图片。</p>
+    <h3 id="设置">设置</h3>
+        <p>在二维码管理</p>
+  </div>
+  <!-- <div class="col-sm-2 col-md-2 col-lg-2" id="myScrollspy">
+    <ul class="nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="125">
+        <li class="active"><a href="#section-1">第一部分</a></li>
+        <li><a href="#section-2">第二部分</a></li>
+        <li><a href="#section-3">第三部分</a></li>
+        <li><a href="#section-4">第四部分</a></li>
+        <li><a href="#section-5">第五部分</a></li>
+    </ul>
+  </div> -->
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<!-- FileInput -->
+<script src="/static/js/fileinput.js" type="text/javascript"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/static/js/bootstrap.min.js"></script>

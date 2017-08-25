@@ -3,9 +3,10 @@ package routers
 
 import (
 	"env/controllers"
-	"github.com/astaxie/beego"
 	"env/controllers/back_end"
 	"env/controllers/front_end"
+
+	"github.com/astaxie/beego"
 )
 
 func init() {
@@ -47,4 +48,6 @@ func init() {
 	beego.Router("/picture/search", &back_end.PictureController{}, "get,post:Search")
 	// 设置链接
 	beego.Router("/setting", &back_end.SettingController{})
+	// 帮助链接
+	beego.Router("/help", &back_end.HelpController{})
 }

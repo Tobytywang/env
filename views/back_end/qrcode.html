@@ -31,6 +31,7 @@
                   <th style="border:none;">名称</th>
                   <th style="border:none;">链接</th>
                   <th style="border:none;">热度</th>
+                  <th style="border:none;">备注</th>
                   <th style="border:none;">操作</th>
                 </tr>
               </thead>
@@ -38,11 +39,20 @@
                 {{range .QRList}}
                 <tr>
                   <td>{{.Id}}</td>
-                  <td><a>{{.Name}}</a></td>
+                  <td><a href="{{.Link}}" target="_blank">{{.Name}}</a></td>
                   <td><a href="{{.Link}}" target="_blank">{{.Link}}</a></td>
                   <td>{{.Read}}</td>
                   <td>
+                    {{if .PicExist}}
+                    {{else}}
+                    <p>图片丢失，请重新上传图片或删除条目</p>
+                    {{end}}
+                  </td>
+                  <td>
+                    {{if .PicExist}}
                     <a href="/download?id={{.Id}}" type="button" class="btn btn-sm btn-success ">下载</a>
+                    {{else}}
+                    {{end}}
                     <a href="/code/add?id={{.Id}}" type="button" class="btn btn-sm btn-primary ">修改</a>
                     <a href="/code/del?id={{.Id}}" type="button" class="btn btn-sm btn-danger ">删除</a>
                   </td>
