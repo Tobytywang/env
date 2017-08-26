@@ -30,6 +30,7 @@
         <tr>
           <th style="border:none;">ID</th>
           <th style="border:none;">标题</th>
+          <th style="border:none;">类型</th>
           <th style="border:none;">总数</th>
           <th style="border:none;">操作</th>
         </tr>
@@ -50,10 +51,22 @@
               {{else}}
                 栏目超出最大长度！
               {{end}}</a></td>
+          <td>
+            {{if (compare .Type "column")}}
+              <code style="background-color:#337ab7;color:#ffffff;">空栏目</code>
+            {{else if (compare .Type "page")}}
+              <code style="background-color:#efad4d;color:#ffffff;">单页面</code>
+            {{else if (compare .Type "articles")}}
+              <code style="background-color:#d9544f;color:#ffffff;">文章列表</code>
+            {{end}}
+          </td>
           <td><a href="" target="_blank">3</a></td>
           <td>
             <a href="/column/add?id={{.Id}}" type="button" class="btn btn-sm btn-primary ">编辑</a>
+            {{if .HasSon}}
+            {{else}}
             <a href="/column/del?id={{.Id}}" type="button" class="btn btn-sm btn-danger ">删除</a>
+            {{end}}
           </td>
         </tr>
         {{end}}

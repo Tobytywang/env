@@ -21,6 +21,11 @@ type Column struct {
 	Content string `orm:"type(text)"form:"content"`
 }
 
+type ColumnExt struct {
+	Column
+	HasSon bool
+}
+
 type MainMenu struct {
 	Id       int
 	Child    int
@@ -155,6 +160,11 @@ func CReadAll(clist *[]*Column) {
 	o.QueryTable("tax").All(clist)
 }
 
+func CReadAllColumn(clist *[]*Column) {
+	o := orm.NewOrm()
+	o.QueryTable("tax").Filter("type", "column").Filter("deep__lte", 2).All(clist)
+}
+
 // 根据父类Id获得所有子类目录
 func CReadByFather(father_id int) []*Column {
 	o := orm.NewOrm()
@@ -188,6 +198,29 @@ func CReadById(id int) (*Column, error) {
 	return &c, nil
 }
 
+// 作为一个过滤函数，数据增强结构体
+// 帮助实现Column里的功能
+func CHasSon(columnlist []*Column) (destlist []ColumnExt) {
+	var columnext ColumnExt
+	for _, column := range columnlist {
+		columnext.Column = *column
+
+		columnlist := make([]*Column, 0)
+		CReadAll(&columnlist)
+		dlist := make([]*Column, 0)
+		dlist, columnlist = CFindSon(column.Id, columnlist, dlist)
+
+		if len(dlist) > 0 {
+			columnext.HasSon = true
+		} else {
+			columnext.HasSon = false
+		}
+		destlist = append(destlist, columnext)
+	}
+
+	return destlist
+}
+
 // 根据结构体修改
 func CModify(c *Column) (err error) {
 	o := orm.NewOrm()
@@ -214,8 +247,8 @@ func CModify(c *Column) (err error) {
 // 删除一个目录
 func CDel(id int) error {
 	o := orm.NewOrm()
-
-	if _, err := o.Delete(&Column{Id: id}); err != nil {
+	_, err := o.Delete(&Column{Id: id})
+	if err != nil {
 		return errors.New("删除目录失败")
 	}
 

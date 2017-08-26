@@ -3,13 +3,9 @@ package back_end
 import (
 	"env/controllers"
 	"env/models"
-	_ "os"
 	"strconv"
-	_ "time"
 
 	"github.com/astaxie/beego"
-	_ "github.com/astaxie/beego/utils/pagination"
-	_ "github.com/beego/i18n"
 )
 
 type ColumnController struct {
@@ -17,39 +13,43 @@ type ColumnController struct {
 }
 
 func (c *ColumnController) Prepare() {
-	beego.Debug("column")
 	c.TplName = "back_end/public.html"
 	c.Data["Tpl"] = "column"
 }
 
-// 显示所有栏目
 func (c *ColumnController) Get() {
 	columnlist := make([]*models.Column, 0)
 	models.CReadAll(&columnlist)
 	dlist := make([]*models.Column, 0)
 	dlist, _ = models.SortColumn(0, columnlist, dlist)
-	c.Data["ColumnList"] = dlist
+	destlist := models.CHasSon(dlist)
+	c.Data["ColumnList"] = destlist
+
+	columnlist_column := make([]*models.Column, 0)
+	models.CReadAllColumn(&columnlist_column)
+	dlist_column := make([]*models.Column, 0)
+	dlist_column, _ = models.SortColumn(0, columnlist_column, dlist_column)
+	c.Data["ColumnList_Column"] = dlist_column
 }
 
 // 新增Column
 func (c *ColumnController) Post() {
 	var column models.Column
-	if err := c.ParseForm(&column); err != nil {
-		beego.Debug(err)
-		// 说明有错误，跳转到查看所有项目界面？
-		// 使用flash提示
+	err := c.ParseForm(&column)
+	if err != nil {
 		c.Redirect("/column", 302)
 	}
 	if column.Id != 0 {
-		// 有Id，表示修改
-		if _, err := models.CReadById(column.Id); err == nil {
-			if err := models.CModify(&column); err != nil {
+		_, err := models.CReadById(column.Id)
+		if err == nil {
+			err := models.CModify(&column)
+			if err != nil {
 				beego.Debug(err)
 			}
 		}
 	} else {
-		// 没有Id，表示新增
-		if err := models.CAdd(&column); err != nil {
+		err := models.CAdd(&column)
+		if err != nil {
 			beego.Debug(err)
 		}
 	}
@@ -58,17 +58,22 @@ func (c *ColumnController) Post() {
 
 // 新增一个栏目
 func (c *ColumnController) Add() {
-	if id, err := c.GetInt("id"); err == nil {
+	id, err := c.GetInt("id")
+	if err == nil {
 		beego.Debug(id)
-		if code, err := models.CReadById(id); err == nil {
-			beego.Debug(code)
-			// c.Data["Modify"] = true
-
+		code, err := models.CReadById(id)
+		if err == nil {
 			columnlist := make([]*models.Column, 0)
 			models.CReadAll(&columnlist)
 			dlist := make([]*models.Column, 0)
 			dlist, _ = models.SortColumn(0, columnlist, dlist)
 			c.Data["ColumnList"] = dlist
+
+			columnlist_column := make([]*models.Column, 0)
+			models.CReadAllColumn(&columnlist_column)
+			dlist_column := make([]*models.Column, 0)
+			dlist_column, _ = models.SortColumn(0, columnlist_column, dlist_column)
+			c.Data["ColumnList_Column"] = dlist_column
 
 			c.Data["Modify"] = true
 			c.Data["Column"] = code
@@ -76,7 +81,7 @@ func (c *ColumnController) Add() {
 			beego.Debug(err)
 		}
 	}
-	// c.TplName = "back_end/qrcode_add.html"
+
 	c.TplName = "back_end/public.html"
 	c.Data["Tpl"] = "column_add"
 }
@@ -86,10 +91,12 @@ func (c *ColumnController) Del() {
 
 	id := c.Input().Get("id")
 	intid, _ := strconv.Atoi(id)
+
 	columnlist := make([]*models.Column, 0)
 	models.CReadAll(&columnlist)
 	dlist := make([]*models.Column, 0)
 	dlist, columnlist = models.CFindSon(intid, columnlist, dlist)
+
 	if len(dlist) > 0 {
 		c.Redirect("/column", 302)
 	} else {
@@ -123,14 +130,8 @@ func (c *ColumnController) Modify() {
 	column, _ = models.CReadById(intid)
 	column.Id = intid
 	column.Name = name
-	// column.Pri = intpri
 	column.Father = intfather
 
-	beego.Debug(column)
-	beego.Debug(intid)
-	beego.Debug(name)
-	// beego.Debug(intpri)
-	beego.Debug(intfather)
 	err := models.CModify(column)
 	beego.Debug(err)
 	c.Redirect("/column", 302)

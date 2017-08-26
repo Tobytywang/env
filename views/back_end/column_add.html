@@ -3,7 +3,9 @@
     {{if .Modify}}
     <form id="column" action="/column/modify" method="POST" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-horizontal column" enctype="multipart/form-data" role="form">
     {{else}}
-    <form id="column" action="/column" method="POST" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-horizontal column" enctype="multipart/form-data" role="form">
+    <form id="column" role="form" action="/column" method="POST" onsubmit="return checkNull();"
+    class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-horizontal column"
+    enctype="multipart/form-data">
     {{end}}
       {{if .Modify}}
       <div class="form-group">
@@ -20,6 +22,14 @@
         {{end}}
       </div>
       <div class="form-group">
+        <label for="">类型</label>
+        <select class="form-control" id="type" name="type">
+          <option value="column">空栏目</option>
+          <option value="page">单页面</option>
+          <option value="articles">文章列表</option>
+        </select>
+      </div>
+      <div class="form-group">
         <label for="">父分类</label>
         <select class="form-control" id="father" name="father">
           {{if .Modify}}
@@ -28,7 +38,7 @@
             <option value="1" selected="selected" disabled="true" disabled>请选择一个父栏目</option>
           {{end}}
 
-          {{range .ColumnList}}
+          {{range .ColumnList_Column}}
             {{if (compare .Deep "1")}}
               <option value="{{.Id}}">|-{{.Name}} </option>
             {{else if (compare .Deep "2")}}
@@ -42,12 +52,35 @@
           {{end}}
         </select>
       </div>
-
       <div class="form-group">
         <div class="pull-right">
-          <button type="submit" class="btn btn-primary">新建栏目</button>
+          <button type="submit" id="submit_button" class="btn btn-primary"
+          data-container="body"
+          data-toggle="popover"
+          data-placement="left" 
+          data-content="需要填写栏目名！">提交</button>
         </div>
       </div>
+      <script type="text/javascript">
+        function checkNull(){
+          var name = document.getElementById("name");
+          if(name.value == ""){
+            $('#submit_button').popover('toggle');
+            return false;
+          }
+          return true;
+        }
+        $(function(){
+          $('#submit_button').on('shown.bs.popover',
+          function(){
+            $('#submit_button').attr("disabled", "disabled");
+            setTimeout(function(){
+              $('#submit_button').popover('hide');
+              $('#submit_button').attr("disabled", false);
+            }, 1000);
+          });
+        });
+      </script>
     </form>
   </div>
 </div>
