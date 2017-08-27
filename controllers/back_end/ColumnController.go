@@ -13,6 +13,12 @@ type ColumnController struct {
 }
 
 func (c *ColumnController) Prepare() {
+	// store := cache.NewMemoryCache()
+	// cpt = captcha.NewWithFilter("captcha/", store)
+	// cpt.ChallengeNums = 5
+	// cpt.StdWidth = 150
+	// cpt.StdHeight = 50
+
 	c.TplName = "back_end/public.html"
 	c.Data["Tpl"] = "column"
 }
@@ -34,26 +40,31 @@ func (c *ColumnController) Get() {
 
 // 新增Column
 func (c *ColumnController) Post() {
-	var column models.Column
-	err := c.ParseForm(&column)
-	if err != nil {
+	if !cpt.VerifyReq(c.Ctx.Request) {
+		beego.Debug("验证未通过")
 		c.Redirect("/column", 302)
-	}
-	if column.Id != 0 {
-		_, err := models.CReadById(column.Id)
-		if err == nil {
-			err := models.CModify(&column)
+	} else {
+		var column models.Column
+		err := c.ParseForm(&column)
+		if err != nil {
+			c.Redirect("/column", 302)
+		}
+		if column.Id != 0 {
+			_, err := models.CReadById(column.Id)
+			if err == nil {
+				err := models.CModify(&column)
+				if err != nil {
+					beego.Debug(err)
+				}
+			}
+		} else {
+			err := models.CAdd(&column)
 			if err != nil {
 				beego.Debug(err)
 			}
 		}
-	} else {
-		err := models.CAdd(&column)
-		if err != nil {
-			beego.Debug(err)
-		}
+		c.Redirect("/column", 302)
 	}
-	c.Redirect("/column", 302)
 }
 
 // 新增一个栏目
@@ -105,15 +116,15 @@ func (c *ColumnController) Del() {
 	}
 }
 
-// 查找一篇文章
-func (c *ColumnController) Search() {
-	c.TplName = "back_end/public.html"
-	c.Data["Tpl"] = "post_add"
-}
-
 // 修改一个栏目的内容
 // 更改优先级，名称，父目录
 func (c *ColumnController) Modify() {
+
+	if !cpt.VerifyReq(c.Ctx.Request) {
+		beego.Debug("验证未通过")
+		c.Redirect("/column", 302)
+	}
+	beego.Debug("验证通过")
 
 	id := c.Input().Get("id")
 	intid, _ := strconv.Atoi(id)

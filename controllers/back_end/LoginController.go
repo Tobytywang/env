@@ -25,17 +25,17 @@ func init() {
 func (c *LoginController) Get() {
 
 	// 不需要密码
-	c.SetSession("IsLogin", true)
-	c.Redirect("/admin", 302)
+	// c.SetSession("IsLogin", true)
+	// c.Redirect("/admin", 302)
 
 	flash := beego.ReadFromRequest(&c.Controller)
 
-  // 如果输错密码
+	// 如果输错密码
 	if _, ok := flash.Data["error"]; ok {
 		c.Data["Error"] = true
 	}
 
-  // 如果用户退出登录
+	// 如果用户退出登录
 	if c.Input().Get("exit") == "true" {
 		c.SetSession("IsLogin", "")
 	}
@@ -53,7 +53,7 @@ func (c *LoginController) Post() {
 	sys_pass := beego.AppConfig.String("USER_PASS")
 	if user_name == sys_name {
 		if user_pass == sys_pass {
-			if !cpt.VerifyReq(c.Ctx.Request){
+			if !cpt.VerifyReq(c.Ctx.Request) {
 				beego.Debug("验证码验证失败")
 				flash.Error("验证码错误")
 				flash.Store(&c.Controller)
@@ -64,13 +64,13 @@ func (c *LoginController) Post() {
 				c.Redirect("/admin", 302)
 			}
 		} else {
-      beego.Debug("密码错误")
+			beego.Debug("密码错误")
 			flash.Error("密码错误")
 			flash.Store(&c.Controller)
 			c.Redirect("/login", 302)
 		}
 	} else {
-    beego.Debug("账户名错误")
+		beego.Debug("账户名错误")
 		flash.Error("账户名错误")
 		flash.Store(&c.Controller)
 		c.Redirect("/login", 302)

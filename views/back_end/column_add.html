@@ -16,9 +16,9 @@
       <div class="form-group">
         <label for="">名称</label>
         {{if .Modify}}
-        <input type="text" class="form-control" id="name" name="name" value="{{.Column.Name}}">
+        <input type="text" class="form-control" id="name" name="name" autocomplete="off" value="{{.Column.Name}}">
         {{else}}
-        <input type="text" class="form-control" id="name" name="name" value="">
+        <input type="text" class="form-control" id="name" name="name" autocomplete="off" value="">
         {{end}}
       </div>
       <div class="form-group">
@@ -53,18 +53,28 @@
         </select>
       </div>
       <div class="form-group">
+        <label>验证码</label> {{create_captcha}}
+        <input type="text"
+        class="form-control" id="captcha_id" name="captcha" autocomplete="off">
+      </div>
+      <div class="form-group">
         <div class="pull-right">
           <button type="submit" id="submit_button" class="btn btn-primary"
           data-container="body"
           data-toggle="popover"
           data-placement="left" 
-          data-content="需要填写栏目名！">提交</button>
+          data-content="请填写完整信息！">提交</button>
         </div>
       </div>
       <script type="text/javascript">
         function checkNull(){
           var name = document.getElementById("name");
           if(name.value == ""){
+            $('#submit_button').popover('toggle');
+            return false;
+          }
+          var captcha = document.getElementById("captcha_id");
+          if(captcha.value == ""){
             $('#submit_button').popover('toggle');
             return false;
           }

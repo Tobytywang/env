@@ -10,9 +10,9 @@ type BaseController struct {
 
 // 需要用户认证的
 func (c *BaseController) Prepare() {
-  if c.GetSession("IsLogin") == "" || c.GetSession("IsLogin") == nil {
-    c.Redirect("/login", 302)
-  }
+	if c.GetSession("IsLogin") == "" || c.GetSession("IsLogin") == nil {
+		c.Redirect("/login", 302)
+	}
 }
 
 func (c *BaseController) Get() {
