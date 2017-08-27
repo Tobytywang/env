@@ -1,16 +1,15 @@
 package back_end
 
 import (
+	"env/controllers"
+	"env/models"
 	"image/png"
 	"io/ioutil"
 	"os"
-	// "path/filepath"
-	"env/controllers"
-	"env/models"
+	"regexp"
 	"strings"
 
 	"github.com/astaxie/beego"
-	//"github.com/astaxie/beego/utils/pagination"
 )
 
 type PictureController struct {
@@ -19,7 +18,6 @@ type PictureController struct {
 
 // 查看（Get）功能
 func (c *PictureController) Get() {
-	beego.Debug("图片")
 	///////////////////////////////////////////////////////
 	// files := make([]string, 0)
 	files := make([]models.Picture, 0)
@@ -118,16 +116,50 @@ func (c *PictureController) Del() {
 
 // 查找一篇文章
 func (c *PictureController) Search() {
-	// content := c.GetString("content")
-	// beego.Debug(content)
-	// qrlist := models.QRSearch(content)
-	// beego.Debug(qrlist)
-	// c.Data["QRList"] = qrlist
-	// // c.TplName = "back_end/qrcode.html"
+	files := make([]models.Picture, 0)
+	dirPath, _ := os.Getwd()
+	dirPath = dirPath + "/static/picture"
+	content := c.GetString("content")
+	// 获得所有文件
+	if dir, err := ioutil.ReadDir(dirPath); err == nil {
+		PthSep := string(os.PathSeparator)
+		suffix := strings.ToUpper(".png")
+		for _, fi := range dir {
+			if fi.IsDir() {
+				continue
+			}
+			if strings.HasSuffix(strings.ToUpper(fi.Name()), suffix) {
+				var file models.Picture
+				file.Name = fi.Name()
+				if findString(file.Name, content) {
+					file.Path = "static/picture" + PthSep + fi.Name()
+					file.Link = "http://" + beego.AppConfig.String("WEB_URL") + "/static/picture" + PthSep + fi.Name()
+					pngfile, err := os.Open(file.Path)
+					if err != nil {
+						beego.Debug(err)
+						continue
+					} else {
+						img, _ := png.DecodeConfig(pngfile)
+						file.Height = img.Height
+						file.Width = img.Width
+					}
+					files = append(files, file)
+				}
+			}
+		}
+	} else {
+		beego.Debug(err)
+	}
+	beego.Debug(files)
+	c.Data["Picture"] = files
 	c.TplName = "back_end/public.html"
-	c.Data["Tpl"] = "picture_add"
+	c.Data["Tpl"] = "picture"
 }
 
-func ListAllPicture() {
-
+func findString(name string, input string) bool {
+	beego.Debug(input)
+	beego.Debug(name)
+	re := regexp.MustCompile(input + "{1}")
+	beego.Debug(re)
+	return re.MatchString(name)
 }

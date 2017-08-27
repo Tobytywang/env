@@ -25,8 +25,8 @@ func init() {
 func (c *LoginController) Get() {
 
 	// 不需要密码
-	// c.SetSession("IsLogin", true)
-	// c.Redirect("/admin", 302)
+	c.SetSession("IsLogin", true)
+	c.Redirect("/admin", 302)
 
 	flash := beego.ReadFromRequest(&c.Controller)
 

@@ -19,9 +19,14 @@ func (c *QRCodeController) Get() {
 	codesPerPage := 15
 	paginator := pagination.SetPaginator(c.Ctx, codesPerPage, models.CountCodes())
 
+	sort := c.GetString("sort")
+	beego.Debug(sort)
+	if (sort != "readup") && (sort != "readdown") && (sort != "iddown") {
+		sort = "id"
+	}
 	c.Data["URL"] = beego.AppConfig.String("WEB_URL")
-	c.Data["QRList"] = models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage)
-	beego.Debug(models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage))
+	c.Data["QRList"] = models.ListCodesByOffsetAndLimit(sort, paginator.Offset(), codesPerPage)
+	// beego.Debug(models.ListCodesByOffsetAndLimit(paginator.Offset(), codesPerPage))
 
 	c.TplName = "back_end/public.html"
 	c.Data["Tpl"] = "qrcode"

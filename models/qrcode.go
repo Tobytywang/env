@@ -135,12 +135,21 @@ func CountCodes() int64 {
 	return cnt
 }
 
-func ListCodesByOffsetAndLimit(offset int, codeperpage int) (destlist []QRCodeExt) {
+func ListCodesByOffsetAndLimit(sort string, offset int, codeperpage int) (destlist []QRCodeExt) {
 	o := orm.NewOrm()
 	var qrlist []QRCode
 	var templist []QRCode
 	var top int
-	o.QueryTable("qrcode").OrderBy("id").All(&templist)
+
+	if sort == "readup" {
+		o.QueryTable("qrcode").OrderBy("read").All(&templist)
+	} else if sort == "readdown" {
+		o.QueryTable("qrcode").OrderBy("-read").All(&templist)
+	} else if sort == "iddown" {
+		o.QueryTable("qrcode").OrderBy("-id").All(&templist)
+	} else {
+		o.QueryTable("qrcode").OrderBy(sort).All(&templist)
+	}
 
 	if (offset + codeperpage) > len(templist) {
 		top = len(templist)

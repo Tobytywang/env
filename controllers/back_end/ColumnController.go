@@ -13,12 +13,6 @@ type ColumnController struct {
 }
 
 func (c *ColumnController) Prepare() {
-	// store := cache.NewMemoryCache()
-	// cpt = captcha.NewWithFilter("captcha/", store)
-	// cpt.ChallengeNums = 5
-	// cpt.StdWidth = 150
-	// cpt.StdHeight = 50
-
 	c.TplName = "back_end/public.html"
 	c.Data["Tpl"] = "column"
 }
@@ -36,35 +30,6 @@ func (c *ColumnController) Get() {
 	dlist_column := make([]*models.Column, 0)
 	dlist_column, _ = models.SortColumn(0, columnlist_column, dlist_column)
 	c.Data["ColumnList_Column"] = dlist_column
-}
-
-// 新增Column
-func (c *ColumnController) Post() {
-	if !cpt.VerifyReq(c.Ctx.Request) {
-		beego.Debug("验证未通过")
-		c.Redirect("/column", 302)
-	} else {
-		var column models.Column
-		err := c.ParseForm(&column)
-		if err != nil {
-			c.Redirect("/column", 302)
-		}
-		if column.Id != 0 {
-			_, err := models.CReadById(column.Id)
-			if err == nil {
-				err := models.CModify(&column)
-				if err != nil {
-					beego.Debug(err)
-				}
-			}
-		} else {
-			err := models.CAdd(&column)
-			if err != nil {
-				beego.Debug(err)
-			}
-		}
-		c.Redirect("/column", 302)
-	}
 }
 
 // 新增一个栏目
@@ -97,21 +62,31 @@ func (c *ColumnController) Add() {
 	c.Data["Tpl"] = "column_add"
 }
 
-// 删除一个栏目
-func (c *ColumnController) Del() {
-
-	id := c.Input().Get("id")
-	intid, _ := strconv.Atoi(id)
-
-	columnlist := make([]*models.Column, 0)
-	models.CReadAll(&columnlist)
-	dlist := make([]*models.Column, 0)
-	dlist, columnlist = models.CFindSon(intid, columnlist, dlist)
-
-	if len(dlist) > 0 {
+// 新增Column
+func (c *ColumnController) Post() {
+	if !cpt.VerifyReq(c.Ctx.Request) {
+		beego.Debug("验证未通过")
 		c.Redirect("/column", 302)
 	} else {
-		models.CDel(intid)
+		var column models.Column
+		err := c.ParseForm(&column)
+		if err != nil {
+			c.Redirect("/column", 302)
+		}
+		if column.Id != 0 {
+			_, err := models.CReadById(column.Id)
+			if err == nil {
+				err := models.CModify(&column)
+				if err != nil {
+					beego.Debug(err)
+				}
+			}
+		} else {
+			err := models.CAdd(&column)
+			if err != nil {
+				beego.Debug(err)
+			}
+		}
 		c.Redirect("/column", 302)
 	}
 }
@@ -146,4 +121,23 @@ func (c *ColumnController) Modify() {
 	err := models.CModify(column)
 	beego.Debug(err)
 	c.Redirect("/column", 302)
+}
+
+// 删除一个栏目
+func (c *ColumnController) Del() {
+
+	id := c.Input().Get("id")
+	intid, _ := strconv.Atoi(id)
+
+	columnlist := make([]*models.Column, 0)
+	models.CReadAll(&columnlist)
+	dlist := make([]*models.Column, 0)
+	dlist, columnlist = models.CFindSon(intid, columnlist, dlist)
+
+	if len(dlist) > 0 {
+		c.Redirect("/column", 302)
+	} else {
+		models.CDel(intid)
+		c.Redirect("/column", 302)
+	}
 }
