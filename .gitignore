@@ -1,5 +1,4 @@
 env
-static/upload
 static/qrcode
 static/img
 env.tar.gz
