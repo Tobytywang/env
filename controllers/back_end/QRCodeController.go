@@ -91,12 +91,15 @@ func (c *QRCodeController) Download() {
 	if err != nil {
 		beego.Debug(err)
 	}
+
 	code, err := models.QRReadById(id)
 	beego.Debug(code)
 	if err != nil {
 		beego.Debug(err)
 	}
-	c.Ctx.Output.Download(code.Code)
+
+	code_string, err := models.Create_qrcode(code, code.Name)
+	c.Ctx.Output.Download(code_string)
 }
 
 // Del删除一个二维码
@@ -126,13 +129,9 @@ func (c *QRCodeController) Search() {
 
 // 存储上传的图片
 func (c *QRCodeController) SaveFile(p *models.QRCode, filetype string) (string, error) {
-	beego.Debug(p)
 	filepath := "static/upload/" + time.Now().Format("2006-01-02")
 	p.Pic = filepath + "/" + p.Name + filetype
-	beego.Debug(p)
 	_, _, err := c.GetFile("pic")
-	beego.Debug(err)
-	beego.Debug("获取到了文件")
 	if err == nil {
 		os.MkdirAll(filepath, 0777)
 		if err := c.SaveToFile("pic", filepath+"/"+p.Name+filetype); err != nil {
@@ -141,6 +140,5 @@ func (c *QRCodeController) SaveFile(p *models.QRCode, filetype string) (string, 
 	} else {
 		return "", err
 	}
-	beego.Debug(p)
 	return p.Pic, nil
 }

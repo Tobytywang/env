@@ -3,7 +3,6 @@ package models
 import (
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -52,8 +51,8 @@ func QRAddOne(code *QRCode) error {
 	}
 
 	// create & save the qrcode
-	name := strings.Split(code.Name, ".")
-	code_string, err := create_qrcode(code, name)
+	// name := strings.Split(code.Name, ".")
+	code_string, err := Create_qrcode(code, code.Name)
 	if err != nil {
 		return err
 	}
@@ -193,10 +192,10 @@ func QRSearch(content string) (destlist []QRCodeExt) {
 	return destlist
 }
 
-func create_qrcode(code *QRCode, name []string) (path string, err error) {
+func Create_qrcode(code *QRCode, name string) (path string, err error) {
 	os.Mkdir(QR_PATH, 0777)
 	link_string := "http://" + WEB_URL + code.Link
-	code_string := "static/" + QR_PATH + "/" + strconv.Itoa(code.Id) + "-" + name[0] + ".png"
+	code_string := "static/" + QR_PATH + "/" + strconv.Itoa(code.Id) + "-" + name + ".png"
 	err = qrcode.WriteFile(link_string, qrcode.Medium, 256, code_string)
 	if err != nil {
 		return "", err
