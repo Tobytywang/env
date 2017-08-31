@@ -100,6 +100,7 @@ func (c *QRCodeController) Download() {
 	code_string, err := models.Create_qrcode(code, code.Name)
 	c.Ctx.Output.Download(code_string)
 	os.Remove(code_string)
+	c.Redirect("/code", 302)
 }
 
 // Del删除一个二维码
