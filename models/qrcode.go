@@ -177,7 +177,6 @@ func QRSearch(content string) (destlist []QRCodeExt) {
 }
 
 func Create_qrcode(code *QRCode, name string) (path string, err error) {
-	os.Mkdir(QR_PATH, 0777)
 	link_string := "http://" + WEB_URL + code.Link
 	code_string := "static/" + QR_PATH + "/" + strconv.Itoa(code.Id) + "-" + name + ".png"
 	err = qrcode.WriteFile(link_string, qrcode.Medium, 256, code_string)
