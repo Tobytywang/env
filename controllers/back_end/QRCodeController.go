@@ -4,7 +4,6 @@ import (
 	"env/controllers"
 	"env/models"
 	"os"
-	"time"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/utils/pagination"
@@ -129,7 +128,7 @@ func (c *QRCodeController) Search() {
 
 // 存储上传的图片
 func (c *QRCodeController) SaveFile(p *models.QRCode, filetype string) (string, error) {
-	filepath := "static/upload/" + time.Now().Format("2006-01-02")
+	filepath := "static/upload/"
 	p.Pic = filepath + "/" + p.Name + filetype
 	_, _, err := c.GetFile("pic")
 	if err == nil {

@@ -15,7 +15,6 @@ type QRCode struct {
 	Name     string `orm:"size(100)"form:"name"`
 	Link     string // 页面的路径
 	Pic      string // 图片存储的路径
-	Code     string // 二维码存储的路径
 	Desc     string `orm:"type(text)"form:"desc-html"`
 	Markdown string `orm:"type(text)"form:"desc-markdown"`
 	Read     uint
@@ -45,21 +44,6 @@ func QRAddOne(code *QRCode) error {
 		return err
 	}
 	code.Link = "/plant?id=" + strconv.Itoa(code.Id)
-	_, err = o.Update(code)
-	if err != nil {
-		return err
-	}
-
-	// create & save the qrcode
-	// name := strings.Split(code.Name, ".")
-	code_string, err := Create_qrcode(code, code.Name)
-	if err != nil {
-		return err
-	}
-
-	// update the Code
-	o.Read(code)
-	code.Code = code_string
 	_, err = o.Update(code)
 	if err != nil {
 		return err
