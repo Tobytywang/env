@@ -86,10 +86,17 @@ func QRRead(id int) error {
 
 func QRDel(id int) error {
 	o := orm.NewOrm()
-	_, err := o.Delete(&QRCode{Id: id})
+	temp := QRCode{Id: id}
+	err := o.Read(&temp)
 	if err != nil {
 		return err
 	}
+	pic := temp.Pic
+	_, err = o.Delete(&QRCode{Id: id})
+	if err != nil {
+		return err
+	}
+	os.Remove(pic)
 	return nil
 }
 

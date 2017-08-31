@@ -98,6 +98,10 @@ func (c *QRCodeController) Download() {
 	}
 
 	code_string, err := models.Create_qrcode(code, code.Name)
+	if err != nil {
+		beego.Debug(err)
+	}
+	beego.Debug(code_string)
 	c.Ctx.Output.Download(code_string)
 	os.Remove(code_string)
 	c.Redirect("/code", 302)
@@ -131,7 +135,7 @@ func (c *QRCodeController) Search() {
 // 存储上传的图片
 func (c *QRCodeController) SaveFile(p *models.QRCode, filetype string) (string, error) {
 	filepath := "static/upload/"
-	p.Pic = filepath + "/" + p.Name + filetype
+	p.Pic = filepath + p.Name + filetype
 	_, _, err := c.GetFile("pic")
 	if err == nil {
 		os.MkdirAll(filepath, 0777)
