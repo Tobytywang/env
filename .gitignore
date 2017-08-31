@@ -1,5 +1,4 @@
 env
-static/qrcode
 static/img
 env.tar.gz
 .idea
